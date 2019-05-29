@@ -12,7 +12,7 @@ I do
   * repeat
   * search weather data and etc
 
-You can freely to only absorb part of this repo to merge it into your own coolq applications.
+You can freely only absorb part of this repo to merge it into your own coolq applications.
 ### XXXXXXXXXXXX
   * First follow https://cqp.cc/ and instructions to get CoolQ ready then  
   * Start the CoolQ application and makes sure it is working properly.
