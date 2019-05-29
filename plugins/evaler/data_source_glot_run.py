@@ -1,5 +1,6 @@
 #from aiohttp import request
 import aiohttp
+from nonebot import get_bot
 
 # code running api source: https://github.com/prasmussen/glot-run/
 #         api url and doc: https://glot.io
@@ -9,7 +10,7 @@ import aiohttp
 
 RUN_API_URL_FORMAT: str = 'https://glot.io/run/{}?version=latest'
 
-TOKEN: str = ''
+TOKEN: str = get_bot().config.GLOT_RUN_TOKEN
 
 SUPPORTED_LANGS: dict = {
     'assembly': {'ext': 'asm'},

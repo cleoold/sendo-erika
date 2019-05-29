@@ -6,10 +6,11 @@
 import json
 
 import aiohttp
+from nonebot import get_bot
 
 URL_BASE: str = 'http://restapi.amap.com/v3/weather/weatherInfo?key='
 # +
-API_KEY: str = ''
+API_KEY: str = get_bot().config.AMAP_WEATHER_API_KEY
 # +
 URL_MODE: str = '&extensions=all&city='
 # +

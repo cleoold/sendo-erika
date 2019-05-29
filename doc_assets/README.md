@@ -24,4 +24,5 @@ Where you know where your qq goes (12345678). Since it does not matter in privat
 The first message indicates you controlled the bot to send a message to you: "hello, world", the other says it is successful. Sometimes if you do not see the success! message, there might be some problems.
 
 Now the bot is working properly. But to use more features, read the following docs...
+
 Or you might want to type `help` to the bot.

@@ -8,11 +8,12 @@ import json
 import random
 
 import aiohttp
+from nonebot import get_bot
 
 #                                                      'weather' for current weather instead
 URL_BASE: str = 'http://api.openweathermap.org/data/2.5/forecast?appid='
 # +
-API_KEY: str = ''
+API_KEY: str = get_bot().config.OPENWEATHERMAP_API_KEY
 # +
 URL_MODE: str = '&units=metric&cnt=25&q='
 # +

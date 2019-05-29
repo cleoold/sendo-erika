@@ -33,6 +33,6 @@ This is given by OWM. But if you pass a Chinese string which does not correspond
 
 To use this, you must request their free api keys separately.
 
-For 高德 (Amap), go to https://lbs.amap.com/api/webservice/guide/api/weatherinfo/ and paste the key in the `API_KEY` variable in `data_source_amap.py` under `/weather` folder.
+For 高德 (Amap), go to https://lbs.amap.com/api/webservice/guide/api/weatherinfo/ and paste the key in the `AMAP_WEATHER_API_KEY` variable in `config_bot.py`.
 
-For OWM, go to https://openweathermap.org/forecast5 and paste the key in the `API_KEY` variable in `data_source_openweather.py` under `/weather` folder.
+For OWM, go to https://openweathermap.org/forecast5 and paste the key in the `OPENWEATHERMAP_API_KEY` variable in `config_bot.py`.
