@@ -1,0 +1,50 @@
+{
+	"modes": {
+		"full match": 1,
+		"inclusive match": 2,
+		"regex match": 3
+    },
+	"global": {
+		"full_match": {
+			"千堂食咩": [
+				"梅菜扣肉", "菠萝咕噜肉", "蒜蓉粉丝蒸大虾", "清蒸桂鱼", "腊肠炒荷兰豆",
+				"菠萝咕噜豆腐", "叉烧肉", "卷肠粉", "冬瓜丸子汤", "白灼虾", "香菇虾仁糯米烧麦",
+				"菠萝咕佬肉", "酸菜烩牛杂", "蜜汁叉烧包", "白切鸡", "砂锅盐焗鸡", "牛肉河粉",
+				"葱香豉油鸭腿", "鲜虾肠粉", "香辣炒红薯粉", "蒜蓉粉丝蒸虾", "叉烧肉", "猪脚粉",
+				"螺蛳粉", "南宁粉饺", "不饿", "人肉叉烧包"
+				],
+			"千堂吃什么" : [
+				"麻婆豆腐", "辣子鸡丁", "东坡肘子", "豆瓣鲫鱼", "口袋豆腐", "酸菜鱼", "夫妻肺片",
+				"蚂蚁上树", "叫花鸡", "茄汁肉卷", "鱼香肉丝", "干煸冬笋", "魔芋烧鸭", "锅贴鱼片",
+				"麻辣肉丁", "鱼香茄饼", "冬菜肉末", "粉蒸鸡", "四川火锅", "重庆火锅", "牛油火锅",
+				"不饿", "宫保鸡丁", "水煮鱼", "刀削面", "炸酱面", "油泼面", "番茄炒面", "麻酱凉面",
+				"重庆砂锅米线", "云南过桥米线", "牛肉拉面", "兰州牛肉面", "西红柿鸡蛋面",
+				"白菜猪肉炖粉条"
+				],
+			"大小姐吃什么" : [
+				"Coquilles Saint-Jacques", "Baked Camembert", "Moules Marinières", "Buckwheat Crêpes",
+				"Blanquette de Veau", "Soupe à L'oignon", "Sole Meunière", "Hachis Parmentier",
+				"Boudin Noir Aux Pommes", "Cheese Soufflé", "Steak Tartare", "Pot-au-feu", "Piperade",
+				"Magret de Canard", "Garbure", "Cassoulet", "Pan-seared Foie Gras", "Confit de Canard",
+				"Poulet Basquaise", "Lamprey à la Bordelaise", "Quenelles of Pike with Lobster Sauce",
+				"Soupe de Poisson à la Rouille", "Gigot D'Agneau Pleureur", "Bouillabaisse"
+				],
+			"早安": [
+				"早安！[\"┗|｀O′|┛ 起床了嗷~~"
+				],
+			"晚安": [
+				"晚安 (￣o￣) . z Z Bye Bye"
+				],
+      "$test_variable": [
+        "你的QQ: {SENDER_ID]\n你的昵称：{SENDER_NICK]"
+        ]
+		},
+		"inclusive_match": {
+		},
+		"regex_match": {
+      "^[A-Z]{3,4}[-\\._]?[0-9]{3,5}$": [
+				"?"
+			  ]
+		}
+	}
+}

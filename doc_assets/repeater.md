@@ -1,0 +1,1 @@
+By default, when a same message in *one* group repeats 3 times, the bot will speak the same sentence once and only once. You can change this number by inspecting `__init__.py` under `/repeater`, the third line from the bottom.
