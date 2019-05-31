@@ -1,8 +1,7 @@
 import re
 
-import aiohttp
+from aiohttp import request
 import bs4
-import requests
 
 # 052219: adding browser headers creates cache in resulting page
 _headers = { 
@@ -22,13 +21,15 @@ async def getGoogling(*keyword) -> str:
         count = 0
         linkElems, greenElems = [], []
         while len(linkElems) == 0:
-            resPage = requests.get('https://google.com/search?q=' + keyword[0], headers=header)
-            soup = bs4.BeautifulSoup(resPage.text, features='lxml')
+            async with request(
+                'GET', 'https://google.com/search?q=' + keyword[0], 
+                headers=header) as resPage:
+                soup = bs4.BeautifulSoup(await resPage.text(), features='lxml')
 
-            # linkElems contains titles and GOOGLE URLS (without domain prefix)
-            linkElems = soup.select('.r a')
-            # greenElems contains displaying urls
-            greenElems = soup.select('cite')
+                # linkElems contains titles and GOOGLE URLS (without domain prefix)
+                linkElems = soup.select('.r a')
+                # greenElems contains displaying urls
+                greenElems = soup.select('cite')
             count += 1
             if count == 10:
                 header = dict(_headers, **_browser)

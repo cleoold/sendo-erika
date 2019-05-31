@@ -1,3 +1,5 @@
+from time import time
+
 from nonebot import CommandSession, on_command, log
 from nonebot.permission import *
 
@@ -11,15 +13,23 @@ google        获取前3条 google search 结果
 DEPRECIATED
 '''
 
+lastCall = time()
+COOLDOWN = 40
+
 @on_command('google', permission=SUPERUSER | GROUP_MEMBER)
 async def google(session: CommandSession):
-    try:
-        keyword = session.get('keyword')
-        report = await getGoogling(keyword)
-        await session.send(report)
-        log.logger.debug(f'google search called: {report[:37]}...')
-    except ValueError:
-        await session.send('error')
+    global lastCall
+    if time() - lastCall > COOLDOWN:
+        try:
+            keyword = session.get('keyword')
+            report = await getGoogling(keyword)
+            await session.send(report)
+            lastCall = time()
+            log.logger.debug(f'google search called: {report[:37]}...')
+        except ValueError:
+            await session.send('error')
+    else:
+        await session.send(f'技能冷却中…… ({COOLDOWN}s)')
 
 @google.args_parser
 async def _(session: CommandSession):

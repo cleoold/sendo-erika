@@ -19,11 +19,12 @@ attribution: https://glot.io
 '''
 
 lastCall = time()
+COOLDOWN = 15
 
 @on_command('coderunner', aliases=('运行', '编译', 'run', 'exe'), permission=SUPERUSER | GROUP_MEMBER, only_to_me=False)
 async def coderunner(session: CommandSession):
     global lastCall
-    if time() - lastCall > 15:
+    if time() - lastCall > COOLDOWN:
         argsList: str = session.get('args')
 
         res = await code_run_glot(argsList[0], argsList[1])
@@ -32,7 +33,7 @@ async def coderunner(session: CommandSession):
         lastCall = time()
         log.logger.debug(f'coderunner called: {res[:20]}...')
     else:
-        await session.send('技能冷却中……')
+        await session.send(f'技能冷却中…… ({COOLDOWN}s)')
 
 @coderunner.args_parser
 async def _(session: CommandSession):

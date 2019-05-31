@@ -14,18 +14,19 @@ all            获取全部热搜
 '''
 
 lastCall = time()
+COOLDOWN = 40
 
 @on_command('百度热搜', aliases=('百度热点', '时事新闻'), permission=SUPERUSER | GROUP_MEMBER)
 async def trend(session: CommandSession):
     global lastCall
-    if time() - lastCall > 40:
+    if time() - lastCall > COOLDOWN:
         arg = session.get('arg')
         trendReport = await getbaiduTrend(arg) # arg passed to function getbaiduTrend
         await session.send(trendReport)
         lastCall = time()
         log.logger.debug(f'Baidu trend called: {trendReport[32:37]}...')
     else:
-        await session.send('技能冷却中……')
+        await session.send(f'技能冷却中…… ({COOLDOWN}s)')
 
 @trend.args_parser
 async def _(session: CommandSession):
