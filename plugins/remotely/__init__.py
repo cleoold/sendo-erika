@@ -1,11 +1,17 @@
-from nonebot import CommandSession, on_command, get_bot
+from nonebot import CommandSession, on_command, get_bot, load_plugins
 from nonebot.permission import *
 
-__plugin_name__ = '遥控发送消息 (private)'
+__plugin_name__ = '遥控机器人 (private)'
 __plugin_usage__ = r'''feature: 遥控
-    示例：
-    发送到群 123456 内容
-    发送到QQ 123456 内容
+    发送消息：
+    发送到群 [群号] [内容]
+    发送到QQ [QQ号] [内容]
+
+    查看已加入的群：
+    所在的群
+
+    重置已加载的插件：
+    重置插件
 '''
 
 class ops:
@@ -46,3 +52,18 @@ async def send_to_private(session: CommandSession):
 @send_to_private.args_parser
 async def group_arg_parse(session: CommandSession):
     await ops.arg_parser_x(session)
+
+
+@on_command('所在的群', permission=SUPERUSER, privileged=True)
+async def groups_in(session: CommandSession):
+    groups: dict = await get_bot().get_group_list()
+    res = ''
+    for each in groups:
+        res += f'{each["group_id"]}: {each["group_name"]}\n'
+    res = res.rstrip('\n')
+    await session.send(res)
+
+@on_command('重置插件', permission=SUPERUSER, privileged=True)
+async def reset_plugins(session: CommandSession):
+    from os import path
+    load_plugins(path.join('.', 'plugins'), 'plugins')
