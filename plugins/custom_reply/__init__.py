@@ -1,10 +1,12 @@
-from os import path
 import json
 import random
 import re
+from os import path
 
-from nonebot import CommandSession, on_command, get_bot, log
+from nonebot import CommandSession, get_bot, log, on_command
 from nonebot.permission import *
+
+from utils_bot.command_ops import force_private
 
 FAILED_MSG = '查看关键字对：view [群号] [模式]\n'\
             '添加单条消息：add [群号] [模式]\n'\
@@ -205,6 +207,7 @@ class keyword_ops:
 
 # keyword interface
 @on_command('群关键字', permission=SUPERUSER)
+@force_private
 async def keyword_mod(session: CommandSession):
 
     try:
@@ -248,6 +251,7 @@ async def keyword_mod(session: CommandSession):
 
 
 @keyword_mod.args_parser
+@force_private
 async def keyword_mod_arg(session: CommandSession):
     argStripped = session.current_arg_text.strip()
 
@@ -261,4 +265,3 @@ async def keyword_mod_arg(session: CommandSession):
         session.state['keyword'] = argStripped
     elif session.current_key == 'reply':
         session.state['reply'] = argStripped
-
