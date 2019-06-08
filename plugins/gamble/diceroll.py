@@ -79,11 +79,12 @@ def roll_dice_many(times: Any,
     res: str = ''
     try:
         times = int(times)
+        if times > 300000:
+            raise TimeoutError
         resDict = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
-        with time_limit(1, 'roll_dice_many'):
-            for _ in range(times):
-                r = roll_dice()
-                resDict[r] += 1
+        for _ in range(times):
+            r = roll_dice()
+            resDict[r] += 1
         for j in ('1', '2', '3', '4', '5', '6'):
             res += f'{j}: {resDict[j]}次\n'
         return res.strip()

@@ -32,6 +32,7 @@ def time_limit(seconds: int, msg:str=''):
     ''' limits the running time of statements inside a with block
     :seconds: stops after [seconds]
     :msg: message to display in logs
+    what the fak, it terminates the programme
     '''
     timer = _threading.Timer(seconds, lambda: _thread.interrupt_main())
     timer.start()
