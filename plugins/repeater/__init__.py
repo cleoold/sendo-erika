@@ -1,4 +1,6 @@
 
+import random
+
 from nonebot import get_bot
 from nonebot.helpers import context_id
 from nonebot.permission import *
@@ -27,6 +29,15 @@ async def _(ctx: Context_T):
 
     # creates tracker for each group at beginning
     record = records.get(groupId)
+
+    ## special: if message starts with '我' then reply with the same sentece but with '你'
+    if msg.startswith('我'):
+        if random.choice((0,0,1)):
+            await bot.send_group_msg(group_id=groupId, message='你' + msg[1:])
+            record.count = -999
+            return
+    ##
+
     if record is None:
         record = Record(msg, 1)
         records[groupId] = record
