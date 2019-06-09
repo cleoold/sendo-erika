@@ -1,3 +1,5 @@
 aiohttp>=3.5.4
 aiocqhttp>=0.6.7
 nonebot>=1.2.2
+jieba=0.39
+translate-python=3.5.0

@@ -1,13 +1,14 @@
-from nonebot import CommandSession, on_command, log
+from jieba import posseg
+from nonebot import (CommandSession, IntentCommand, NLPSession, log,
+                     on_command, on_natural_language)
 from nonebot.permission import *
-
 from translate import Translator
 
+from .china_city_list_source_amap import CHINESE_CITIES
 from .data_source_amap import amap_weather
 from .data_source_openweather import openweathermap_weather
-from .china_city_list_source_amap import CHINESE_CITIES
 
-__plugin_name__ = '天气'
+__plugin_name__ = '天气 *NLP'
 __plugin_usage__ = r'''feature: 查询天气
 
 天气 [城市]       获取天气预报
@@ -65,3 +66,18 @@ async def _(session: CommandSession):
             session.state['city'] = argStripped
         else:
             session.finish(__plugin_usage__)
+# EXP
+@on_natural_language(keywords={'天气'})
+async def _(session: NLPSession):
+    argsStripped = session.msg_text.strip()
+    words = list(posseg.lcut(argsStripped))
+
+    city = None
+    for word in words:
+        if word.flag == 'ns':
+            city = word.word
+            break
+    if city == None:
+        city = ' '.join((word.word for word in words if word.flag == 'eng'))
+
+    return IntentCommand(64.0, 'weather', current_arg=city or '')

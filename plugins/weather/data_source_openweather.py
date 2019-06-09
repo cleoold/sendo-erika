@@ -72,4 +72,4 @@ f'''{directChart['dt_txt'][:16]}: {weatherChart['main']} ({weatherChart['descrip
     return res
 
 async def openweathermap_weather(*city: str):
-    return process_weatherdata(await fetch(city[0]))
+    return process_weatherdata(await fetch(*city))

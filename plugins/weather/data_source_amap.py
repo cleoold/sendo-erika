@@ -57,4 +57,4 @@ f'''{locCurrDay['date']} 日：{locCurrDay['daytemp']}°C，{locCurrDay['dayweat
     return res
 
 async def amap_weather(*city: str):
-    return process_weatherdata(await fetch(city[0]))
+    return process_weatherdata(await fetch(*city))
