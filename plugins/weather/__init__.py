@@ -35,7 +35,7 @@ class util:
         if word == '雪城': return 'syracuse'
         
         translator = Translator(from_lang='zh', to_lang='en')
-        res = translator.translate(word).rstrip(' city')
+        res = translator.translate(word).lower().rstrip(' city')
         return res
 
 
