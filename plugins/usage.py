@@ -26,8 +26,8 @@ async def _(session: CommandSession):
     arg = session.current_arg_text.strip().lower()
     if not arg:
         text = '呼叫我的名字来使用以下功能~:\n{\n\t' +\
-            '\n\t'.join(p.name for p in plugins) +\
-            '\n}'
+            '\n\t'.join(p.name for p in plugins) + '\n}' +\
+            '例子：帮助 天气'
         await session.send(text)
 
     else:

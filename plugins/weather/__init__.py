@@ -8,7 +8,7 @@ from .china_city_list_source_amap import CHINESE_CITIES
 from .data_source_amap import amap_weather
 from .data_source_openweather import openweathermap_weather
 
-__plugin_name__ = '天气 *NLP'
+__plugin_name__ = '天气 *NL'
 __plugin_usage__ = r'''feature: 查询天气
 
 天气 [城市]       获取天气预报

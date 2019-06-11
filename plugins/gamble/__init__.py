@@ -5,21 +5,26 @@ from nonebot.permission import *
 
 from .diceroll import roll_dice, roll_dice_many
 
-__plugin_name__ = '试试人品 *NLP'
+__plugin_name__ = '试试人品 *NL'
 __plugin_usage__ = f'''feature: 生成随机数
 可用命令：
 扔骰子, 扔骰子 []次
 '''
 
+@on_command('试试人品', permission=GROUP_MEMBER | SUPERUSER)
+async def try_luck(session: CommandSession):
+    await session.send(__plugin_usage__)
+
+
 @on_command('扔骰子', aliases=('扔色子', '扔个骰子', '扔个色子'), permission=GROUP_MEMBER | SUPERUSER)
-async def roll_dice_interface(session: CommandSession):
+async def roll_dice_host(session: CommandSession):
     times: int = session.get('times')
     if times in ('', '1'):
         await session.send(roll_dice(pixel=True))
     else:
         await session.send(roll_dice_many(times))
 
-@roll_dice_interface.args_parser
+@roll_dice_host.args_parser
 async def _(session: CommandSession):
     argsStripped: str = session.current_arg_text.strip(' \n次')
     session.state['times'] = argsStripped if argsStripped else ''
@@ -35,3 +40,4 @@ async def _(session: NLPSession):
             times = word.word
 
     return IntentCommand(64.0, '扔骰子', current_arg=times or '')
+
