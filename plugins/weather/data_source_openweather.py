@@ -50,26 +50,26 @@ def process_weatherdata(resJson: dict or None) -> str:
     reportTime = datetime.utcfromtimestamp(
         resJson['list'][0]['dt']).strftime('%Y-%m-%d %H:%M:%S')
 
-    res = f'''[below times are UTC]
+    heading = f'''[below times are UTC]
 region: {city}, {nation}, time diff from UTC: {timezone/60/60}h
   report time: {reportTime}\n'''
 
-    try:
-        for j in range(0, 25, 4):
-            directChart: dict = resJson['list'][j]
-            mainChart = directChart['main']
-            weatherChart = directChart['weather'][0]
-            windChart = directChart['wind']
-            # if tempMin and tempMax are same, only display one temp
-            tempMin, tempMax = mainChart['temp_min'], mainChart['temp_max']
-            temp = (f'{tempMin}-{tempMax}°C', f'{tempMin}°C')[tempMin == tempMax]
-            res +=\
+    def resGen():
+        try:
+            for j in range(0, 25, 4):
+                directChart: dict = resJson['list'][j]
+                mainChart = directChart['main']
+                weatherChart = directChart['weather'][0]
+                windChart = directChart['wind']
+                # if tempMin and tempMax are same, only display one temp
+                tempMin, tempMax = mainChart['temp_min'], mainChart['temp_max']
+                temp = (f'{tempMin}-{tempMax}°C', f'{tempMin}°C')[tempMin == tempMax]
+                yield \
 f'''{directChart['dt_txt'][:16]}: {weatherChart['main']} ({weatherChart['description']}), {temp}
-    wind: {windChart['speed']}m/s ({windChart['deg']}°), humidity: {mainChart['humidity']}, pressure: {mainChart['pressure']}hPa
-'''
-    except Exception:
-        pass
-    return res
+    wind: {windChart['speed']}m/s ({windChart['deg']}°), humidity: {mainChart['humidity']}, pressure: {mainChart['pressure']}hPa'''
+        except (IndexError, KeyError):
+            pass
+    return ''.join((heading, '\n'.join(resGen()),))
 
 async def openweathermap_weather(*city: str):
     return process_weatherdata(await fetch(*city))

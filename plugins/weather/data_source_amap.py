@@ -42,19 +42,19 @@ def process_weatherdata(resJson: dict or None) -> str:
     city = resJson['forecasts'][0]['city']
     time = resJson['forecasts'][0]['reporttime']
 
-    res = f'预报时间：{time}\n地区：{province} {city}\n'
+    heading = f'预报时间：{time}\n地区：{province} {city}\n'
     def process_wind_str(wind: str) -> str:
         return (wind, wind + '风')['东' in wind or '西' in wind or '南' in wind or '北' in wind]
-    try:
-        for j in range(3):
-            locCurrDay = resJson['forecasts'][0]['casts'][j]
-            res +=\
+    def resGen():
+        try:
+            for j in range(3):
+                locCurrDay = resJson['forecasts'][0]['casts'][j]
+                yield \
 f'''{locCurrDay['date']} 日：{locCurrDay['daytemp']}°C，{locCurrDay['dayweather']}，{process_wind_str(locCurrDay['daywind'])}
-{locCurrDay['date']} 夜：{locCurrDay['nighttemp']}°C，{locCurrDay['nightweather']}，{process_wind_str(locCurrDay['nightwind'])}
-'''
-    except Exception:
-        pass
-    return res
+{locCurrDay['date']} 夜：{locCurrDay['nighttemp']}°C，{locCurrDay['nightweather']}，{process_wind_str(locCurrDay['nightwind'])}'''
+        except (IndexError, KeyError):
+            pass
+    return ''.join((heading, '\n'.join(resGen()),))
 
 async def amap_weather(*city: str):
     return process_weatherdata(await fetch(*city))
