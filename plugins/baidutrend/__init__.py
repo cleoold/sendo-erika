@@ -3,7 +3,7 @@ from time import time
 from nonebot import CommandSession, on_command, log
 from nonebot.permission import *
 
-from .data_source import getbaiduTrend
+from .data_source import get_baidu_trend
 
 __plugin_name__ = '百度热搜获取'
 __plugin_usage__ = r'''feature: 百度热搜获取
@@ -21,7 +21,7 @@ async def trend(session: CommandSession):
     global lastCall
     if time() - lastCall > COOLDOWN:
         arg = session.get('arg')
-        trendReport = await getbaiduTrend(arg) # arg passed to function getbaiduTrend
+        trendReport = await get_baidu_trend(arg) # arg passed to function get_baidu_trend
         await session.send(trendReport)
         lastCall = time()
         log.logger.debug(f'Baidu trend called: {trendReport[32:37]}...')
