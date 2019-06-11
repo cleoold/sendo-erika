@@ -37,7 +37,7 @@ async def coderunner(session: CommandSession):
 
 @coderunner.args_parser
 async def _(session: CommandSession):
-    argsStripped: str = session.current_arg_text.strip(' ')
+    argsStripped: str = session.current_arg_text.strip()
 
     if session.is_first_run:
         if argsStripped:
