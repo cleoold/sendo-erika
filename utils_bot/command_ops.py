@@ -4,10 +4,12 @@ from functools import wraps as _wraps
 
 from nonebot import CommandSession as _CommandSession
 from nonebot import log as _log
+from nonebot import on_command as _on_command
+from nonebot.command import CommandHandler_T
 
 import _thread
 
-from .typing import Awaitable
+from .typing import Awaitable, Callable, Generator, Iterable
 
 
 # decorator
@@ -43,3 +45,48 @@ def time_limit(seconds: int, msg:str=''):
         raise TimeoutError
     finally:
         timer.cancel()
+
+##############################################################################
+# these features are subject to low efficiencies, use at own risks
+# they are absolutely NOT RECOMMENDED in your implementations
+## command generator
+def _names_after_q(names: Iterable[str]) -> Generator[str, None, None]:
+    for each in names:
+        yield each
+        yield f'{each}?'
+        yield f'{each}？'
+
+def _names_after_do(names: Iterable[str]) -> Generator[str, None, None]:
+    for each in names:
+        yield each
+        yield f'{each}下'
+        yield f'{each}一下'
+
+def _names_after_do2(names: Iterable[str]) -> Generator[str, None, None]:
+    for each in names:
+        yield each
+        yield f'给我{each}'
+        yield f'和我{each}'
+        yield f'跟我{each}'
+
+# decorators
+def on_grp_command_ask(*names: Iterable[str]) -> CommandHandler_T:
+    '''default to group chat and superusers.
+    automatically generates question marks after command names as aliases
+    '''
+    namesNew = _names_after_q(names)
+    return _on_command(next(namesNew),
+                       aliases=(name for name in namesNew),
+                       permission=0xF100) # # SUPERUSER | GROUP_MEMBER
+
+def on_grp_command_do(*names: Iterable[str]) -> CommandHandler_T:
+    '''default to group chat and superusers.
+    automatically generates some pre/suffixes as aliases
+    '''
+    namesNew = _names_after_do(names)
+    namesNew = _names_after_do2(namesNew)
+    namesNew = _names_after_q(namesNew)
+    return _on_command(next(namesNew),
+                       aliases=(name for name in namesNew),
+                       permission=0xF100)
+##############################################################################
