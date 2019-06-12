@@ -69,7 +69,7 @@ f'''{directChart['dt_txt'][:16]}: {weatherChart['main']} ({weatherChart['descrip
     wind: {windChart['speed']}m/s ({windChart['deg']}°), humidity: {mainChart['humidity']}, pressure: {mainChart['pressure']}hPa'''
         except (IndexError, KeyError):
             pass
-    return ''.join((heading, '\n'.join(resGen()),))
+    return heading + '\n'.join(resGen())
 
 async def openweathermap_weather(*city: str):
     return process_weatherdata(await fetch(*city))

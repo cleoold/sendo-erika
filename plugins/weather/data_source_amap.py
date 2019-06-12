@@ -54,7 +54,7 @@ f'''{locCurrDay['date']} 日：{locCurrDay['daytemp']}°C，{locCurrDay['dayweat
 {locCurrDay['date']} 夜：{locCurrDay['nighttemp']}°C，{locCurrDay['nightweather']}，{process_wind_str(locCurrDay['nightwind'])}'''
         except (IndexError, KeyError):
             pass
-    return ''.join((heading, '\n'.join(resGen()),))
+    return heading + '\n'.join(resGen())
 
 async def amap_weather(*city: str):
     return process_weatherdata(await fetch(*city))
