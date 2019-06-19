@@ -1,7 +1,7 @@
 In a group chat, you might want the bot to do a "keyword reply". For example, if someone says `在吗？` the bot replies `在！`.
-The custom reply plugin is based on the private chat window. By chatting with the bot with command one can easily modify the keyword settings.
+The custom reply plugin is based on the private chat window. By chatting with the bot with commands one can easily modify the keyword settings.
 
-All matchings are stored in a json file called `group_data.json` under its module path. Matchings split into qq groups, which means these settings are group-specific. One special part is there exist a "group number" called `global`, which means keywords in this dict respond to every groups.
+All matchings are stored in a json file called `group_data.json` under its module path. Matchings split into qq groups, which means these settings are group-specific. One special part is there exists a "group number" called `global`, which means keywords in this dict respond to every group.
 
   ```
            ┌ "global": .... groups 123456 654321 also apply
@@ -10,7 +10,7 @@ All matchings are stored in a json file called `group_data.json` under its modul
   ```
 
 In each group, there are three modes: full match (1), inclusive match (2), and regex match (3).
-  * full: replies only when the keywords completely matches the message
+  * full: replies only when the keyword completely matches the message
   * inclusive: replies when keywords are *in* the message
   * regex: replies when the message matches given pattern
 

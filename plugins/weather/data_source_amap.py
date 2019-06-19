@@ -22,7 +22,7 @@ async def fetch(*city: str) -> dict:
     async with aiohttp.ClientSession() as session:
         try:
             async with session.get(
-                    URL_BASE + API_KEY + URL_MODE + city[0],
+                    f'{URL_BASE}{API_KEY}{URL_MODE}{city[0]}',
                     headers=headers, timeout=10, ssl=False) as r:
                 res = json.loads(await r.text(), encoding='utf-8')
                 assert res['info'].lower() == 'ok'
