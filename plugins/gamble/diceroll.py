@@ -1,6 +1,5 @@
 import random
 
-from utils_bot.command_ops import time_limit
 from utils_bot.typing import Any
 
 __all__ = ['roll_dice_many', 
