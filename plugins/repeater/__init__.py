@@ -1,6 +1,8 @@
 
 import random
 
+import asyncio
+
 from nonebot import get_bot
 from nonebot.helpers import context_id
 from nonebot.permission import *
@@ -42,13 +44,17 @@ class Records(dict):
             await bot.send_group_msg(group_id=group_id, message=msg)
             record.count = -999
     
-    async def you_repeat(self, group_id:str, msg:str):
+    async def you_repeat(self, group_id:str, msg:str, delay:int=0):
         'used when message starts with "我"'
         record = self.get_record(group_id, msg)
         if random.choice((0,0,0,0,1)):
-            if '你' in msg:
-                msg = msg.replace('你', '我')
-            await bot.send_group_msg(group_id=group_id, message='你' + msg[1:])
+            await asyncio.sleep(delay)
+            newMsg = []
+            for char in msg:
+                if char == '我': newMsg.append('你')
+                elif char == '你': newMsg.append('我')
+                else: newMsg.append(char)
+            await bot.send_group_msg(group_id=group_id, message=''.join(newMsg))
             record.count = -999
 
 records: Dict[str, Record] = Records()
@@ -61,7 +67,9 @@ async def _(ctx: Context_T):
 
     ## special: if message starts with '我' then reply with the same sentece but with '你'
     if msg.startswith('我'):
-        await records.you_repeat(groupId, msg)
+        # delayed
+        await records.you_repeat(groupId, msg, 
+                                 delay=random.randint(1, 10))
     ##
     else:
         await records.simple_repeat(groupId, msg)

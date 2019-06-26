@@ -3,6 +3,8 @@ import random
 import re
 from os import path
 
+import asyncio
+
 from nonebot import CommandSession, get_bot, log, on_command
 from nonebot.permission import *
 
@@ -92,7 +94,8 @@ async def handle_keyword_reply(ctx: Context_T):
                     toSend: str = process_var(ctx, random.choice(reply))
                     raise _Get_Out
         except Exception:
-            pass
+            # waits few secs before sending message
+            await asyncio.sleep(random.randint(1,5))
     try:
         await bot.send_group_msg(group_id=currentGroupId, message=toSend)
     except NameError:
