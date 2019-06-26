@@ -1,12 +1,12 @@
 
-import random
-
 import asyncio
+import random
 
 from nonebot import get_bot
 from nonebot.helpers import context_id
 from nonebot.permission import *
 
+from utils_bot.msg_ops import msg_is_calling_me
 from utils_bot.typing import *
 
 __plugin_name__ = '复读机 (private)'
@@ -48,6 +48,8 @@ class Records(dict):
         'used when message starts with "我"'
         record = self.get_record(group_id, msg)
         if random.choice((0,0,0,0,1)):
+            if msg_is_calling_me(msg):
+                return
             await asyncio.sleep(delay)
             newMsg = []
             for char in msg:
