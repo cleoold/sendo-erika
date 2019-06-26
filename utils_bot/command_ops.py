@@ -30,6 +30,7 @@ def force_private(f: Awaitable) -> Awaitable:
 
 
 # context manager
+"""
 @_contextmanager
 def time_limit(seconds: int, msg:str=''):
     ''' limits the running time of statements inside a with block  
@@ -45,7 +46,7 @@ def time_limit(seconds: int, msg:str=''):
         _log.logger.debug(f'time out for operation {msg}')
         raise TimeoutError
     finally:
-        timer.cancel()
+        timer.cancel()"""
 
 ##############################################################################
 # these features are subject to low efficiencies, and generate 
@@ -89,6 +90,14 @@ def on_grp_command_do(*names: Iterable[str]) -> CommandHandler_T:
     namesNew = _names_after_do(names)
     namesNew = _names_after_do2(namesNew)
     namesNew = _names_after_q(namesNew)
+    return _on_command(next(namesNew),
+                       aliases=(name for name in namesNew),
+                       permission=0xF100)
+
+def on_grp_command(*names: Iterable[str]) -> CommandHandler_T:
+    '''default to group chat and superusers.
+    '''
+    namesNew = iter(names)
     return _on_command(next(namesNew),
                        aliases=(name for name in namesNew),
                        permission=0xF100)
