@@ -12,7 +12,7 @@ __plugin_usage__ = r'''feature: 帮助
 千堂帮助 google
 '''
 
-@on_command('帮助', aliases=['help'], permission=SUPERUSER | GROUP_MEMBER)
+@on_command('帮助', aliases=['help', '功能'], permission=SUPERUSER | GROUP_MEMBER)
 async def _(session: CommandSession):
     # get list of all plugins
     if session.ctx['user_id'] in get_bot().config.SUPERUSERS\
@@ -33,4 +33,4 @@ async def _(session: CommandSession):
     else:
         for p in plugins:
             if arg in p.name.lower():
-                await session.send(p.usage)
+                await session.send(p.usage.strip())
