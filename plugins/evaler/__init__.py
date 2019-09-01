@@ -51,6 +51,7 @@ async def _(session: CommandSession):
             if argv1 == 'py': argv1 = 'python'
             if argv1 == 'c++': argv1 = 'cpp'
             if argv1 == 'c#': argv1 = 'csharp'
+            if argv1 == 'js': argv1 = 'javascript'
 
             if not argv1 in SUPPORTED_LANGS.keys():
                 session.finish('当前语言不支持~')
