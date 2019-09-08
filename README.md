@@ -29,3 +29,6 @@ You can freely only absorb part of this repo to merge it into your own coolq app
      ...
   ```
   * I have plugin documentation, see it and finish initialization.
+
+### Related
+ * [scripter for sendo erika](https://github.com/cleoold/scripter-for-sendo-erika)
