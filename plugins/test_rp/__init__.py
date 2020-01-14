@@ -38,7 +38,7 @@ class TestLuck:
         random.seed()
         return cls.return_luck_by_num(res)
 
-@on_command('我的运气', aliases=('运气', '今日运气', '今日人品', '我的人品', 'jrrp'), permission=GROUP_MEMBER | SUPERUSER)
+@on_command('我的运气', aliases=('运气', '今日运气', '今日人品', '我的人品', 'jrrp', '运势', '今日运势'), permission=GROUP_MEMBER | SUPERUSER)
 async def my_luck_today(session: CommandSession):
     senderId: int = int(session.ctx['user_id'])
     await session.send(TestLuck.generate_luck_result(senderId), at_sender=True)
