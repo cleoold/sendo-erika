@@ -8,6 +8,8 @@ import json
 import aiohttp
 from nonebot import get_bot
 
+from utils_bot.typing import Union
+
 URL_BASE: str = 'http://restapi.amap.com/v3/weather/weatherInfo?key='
 # +
 API_KEY: str = get_bot().config.AMAP_WEATHER_API_KEY
@@ -31,7 +33,7 @@ async def fetch(*city: str) -> dict:
             return None
 
 # yields weather data
-def process_weatherdata(resJson: dict or None) -> str:
+def process_weatherdata(resJson: Union[dict, None]) -> str:
     if resJson is None:
         return '天气服务不可用'
     

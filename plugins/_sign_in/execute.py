@@ -8,7 +8,7 @@ from pytz import timezone
 import aiosqlite
 import asyncio
 
-from utils_bot.typing import Tuple
+from utils_bot.typing import Tuple, Union
 
 
 def today_to_str() -> str:
@@ -63,8 +63,8 @@ class SignInSession(aiosqlite.Connection):
     '''
 
     def __init__(self,  db_name: str,
-                 user_id: str or int,
-                 group_id: str or int,
+                 user_id: Union[str, int],
+                 group_id: Union[str, int],
                  **kwargs):
 
         def connector() -> sqlite3.Connection:

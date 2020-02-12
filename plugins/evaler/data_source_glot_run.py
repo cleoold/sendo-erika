@@ -2,6 +2,8 @@
 import aiohttp
 from nonebot import get_bot
 
+from utils_bot.typing import Union
+
 # code running api source: https://github.com/prasmussen/glot-run/
 #         api url and doc: https://glot.io
 #         get your token there at https://glot.io/account/token
@@ -42,7 +44,7 @@ SUPPORTED_LANGS: dict = {
 
 headers = {'Authorization': f'Token {TOKEN}'}
 
-async def fetch(lang: str, code: str) -> dict or None:
+async def fetch(lang: str, code: str) -> Union[dict, None]:
     async with aiohttp.ClientSession() as session:
         try:
             async with session.post(RUN_API_URL_FORMAT.format(lang),

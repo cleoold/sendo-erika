@@ -10,6 +10,8 @@ import random
 import aiohttp
 from nonebot import get_bot
 
+from utils_bot.typing import Union
+
 #                                                      'weather' for current weather instead
 URL_BASE: str = 'http://api.openweathermap.org/data/2.5/forecast?appid='
 # +
@@ -35,7 +37,7 @@ async def fetch(*city: str) -> dict:
             return None
 
 # yields weather data
-def process_weatherdata(resJson: dict or None) -> str:
+def process_weatherdata(resJson: Union[dict, None]) -> str:
     if resJson is None:
         return 'Temperature data unavailable'
     if not 'list' in resJson.keys():

@@ -14,9 +14,9 @@ from .typing import Awaitable, Callable, Generator, Iterable
 
 
 # decorator
-def force_private(f: Awaitable) -> Awaitable:
+def force_private(f: Callable[..., Awaitable]) -> Callable[..., Awaitable]:
     '''forces a command to be executed only in private chat  
-    :args[0]: must be a CommandSession
+    :wrapped f's args[0]: must be a CommandSession
     '''
     @_wraps(f)
     async def wrapped(*args, **kwargs):
