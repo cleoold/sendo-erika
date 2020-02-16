@@ -1,8 +1,7 @@
-import asyncio
 import random
 from os import path
 
-from nonebot import CommandSession, log, on_command
+from nonebot import CommandSession, log, on_command, get_bot
 from nonebot.permission import *
 
 from utils_bot.typing import Tuple
@@ -41,14 +40,15 @@ SOME_GREETINGS = [
 
 SIGN_IN_DB_PATH = path.join(path.dirname(__file__), 'signin.db')
 
+bot = get_bot()
+
 # initialize db obsolete
+@bot.server_app.before_serving
 async def initialize_db():
     async with SignInSession(SIGN_IN_DB_PATH, 0, 0) as table_init:
         log.logger.debug('loading signin db...')
         await table_init.init_table()
         await table_init.commit()
-
-asyncio.get_event_loop().run_until_complete(initialize_db())
 
 
 def get_user_and_group_ids(session: CommandSession) -> Tuple[str, str]:

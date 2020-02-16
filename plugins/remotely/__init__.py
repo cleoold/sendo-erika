@@ -1,11 +1,16 @@
 from nonebot import CommandSession, on_command, get_bot, load_plugins
 from nonebot.permission import *
+from nonebot.message import unescape
 
 __plugin_name__ = '遥控机器人 (private)'
 __plugin_usage__ = r'''feature: 遥控
     发送消息：
     发送到群 [群号] [内容]
     发送到QQ [QQ号] [内容]
+
+    发送CQ码：
+    发送到群CQ [群号] [内容]
+    发送到QQCQ [QQ号] [内容]
 
     查看已加入的群：
     所在的群
@@ -16,11 +21,13 @@ __plugin_usage__ = r'''feature: 遥控
 
 class ops:
     @staticmethod
-    async def send_to_x(session: CommandSession, msg_type: str):
+    async def send_to_x(session: CommandSession, msg_type: str, unescape_=False):
         bot = get_bot()
         param = session.get('param')
         paramSplit = param.split(' ', 1)
         targetId, toSend = paramSplit[0], paramSplit[1]
+        if unescape_:
+            toSend = unescape(toSend)
 
         try:
             if msg_type == 'group':
@@ -48,6 +55,16 @@ async def send_to_group(session: CommandSession):
 async def send_to_private(session: CommandSession):
     await ops.send_to_x(session, 'private')
 
+@on_command('发送到群CQ', permission=SUPERUSER, privileged=True)
+async def send_to_group_CQ(session: CommandSession):
+    await ops.send_to_x(session, 'group', True)
+
+@on_command('发送到QQCQ', permission=SUPERUSER, privileged=True)
+async def send_to_private_CQ(session: CommandSession):
+    await ops.send_to_x(session, 'private', True)
+
+@send_to_group_CQ.args_parser
+@send_to_private_CQ.args_parser
 @send_to_group.args_parser
 @send_to_private.args_parser
 async def group_arg_parse(session: CommandSession):
