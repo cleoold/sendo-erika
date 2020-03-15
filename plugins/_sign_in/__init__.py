@@ -80,7 +80,7 @@ async def sign_in(session: CommandSession):
     log.logger.debug(f'{user_id} trying to sign in in group {group_id} success: {status}')
 
 
-@on_command('签到信息', aliases=('信息', 'signinfo'), permission=GROUP_MEMBER)
+@on_command('签到信息', aliases=('信息', 'signinfo', '好感度'), permission=GROUP_MEMBER)
 async def check_sign_in_info(session: CommandSession):
     try:
         user_id, group_id = get_user_and_group_ids(session)
