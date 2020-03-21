@@ -27,7 +27,7 @@ async def _(session: CommandSession):
         await session.send(f'Locals:\n{pprint.pformat(localArgs, indent=2)}')
 
         if isinstance(localArgs.get('run'), Callable):
-            res = localArgs['run'](session.bot, session.ctx)
+            res = localArgs['run'](session.bot, session.event)
             if isinstance(res, Awaitable):
                 res = await asyncio.wait_for(res, 6)
             await session.send(f'返回：\n{pprint.pformat(res, indent=2)}')

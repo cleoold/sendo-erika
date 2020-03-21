@@ -52,8 +52,8 @@ async def initialize_db():
 
 
 def get_user_and_group_ids(session: CommandSession) -> Tuple[str, str]:
-    user_id: str = session.ctx['user_id']
-    group_id: str = session.ctx['group_id']
+    user_id: str = session.event['user_id']
+    group_id: str = session.event['group_id']
     return user_id, group_id
 
 
@@ -97,6 +97,6 @@ async def check_sign_in_info(session: CommandSession):
 
 @on_command('我的运气', aliases=('运气', '今日运气', '今日人品', '我的人品', 'jrrp', '运势', '今日运势'), permission=GROUP_MEMBER | SUPERUSER)
 async def my_luck_today(session: CommandSession):
-    senderId: int = int(session.ctx['user_id'])
+    senderId: int = int(session.event['user_id'])
     await session.send(generate_luck_result(senderId), at_sender=True)
 

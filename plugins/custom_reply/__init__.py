@@ -5,6 +5,7 @@ from os import path
 
 import asyncio
 
+from aiocqhttp import Event
 from nonebot import CommandSession, get_bot, log, on_command
 from nonebot.permission import *
 
@@ -45,7 +46,7 @@ bot: NoneBot = get_bot()
 
 # auto reply in group chats
 
-def process_var(ctx: Context_T, myText: str) -> str:
+def process_var(ctx: Event, myText: str) -> str:
     'process whether the reply keyword contains variables.'
     if not re.search(r'{SENDER_.+]', myText):
         return myText
@@ -70,7 +71,7 @@ class _Get_Out(Exception):
     pass
 
 @bot.on_message('group')
-async def handle_keyword_reply(ctx: Context_T):
+async def handle_keyword_reply(ctx: Event):
 
     currentGroupId: str = ctx['group_id']
     textReceived: str = ctx['raw_message']

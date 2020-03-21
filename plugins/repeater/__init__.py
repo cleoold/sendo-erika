@@ -2,8 +2,8 @@
 import asyncio
 import random
 
+from aiocqhttp import Event
 from nonebot import get_bot
-from nonebot.helpers import context_id
 from nonebot.permission import *
 
 from utils_bot.msg_ops import msg_is_calling_me
@@ -62,7 +62,7 @@ class Records(dict):
 records: Dict[str, Record] = Records()
 
 @bot.on_message('group')
-async def _(ctx: Context_T):
+async def _(ctx: Event):
 
     groupId = ctx['group_id']
     msg = ctx['raw_message']

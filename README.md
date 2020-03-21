@@ -1,9 +1,9 @@
 ## sendo erika on [NoneBot](https://github.com/richardchien/nonebot)
-[![License](https://img.shields.io/github/license/richardchien/nonebot.svg)](LICENSE) ![Python](https://img.shields.io/badge/python-3.6%2B-blue.svg)
+[![License](https://img.shields.io/github/license/richardchien/nonebot.svg)](LICENSE) ![Python](https://img.shields.io/badge/python-3.7%2B-blue.svg)
 
 ### Description
 I am a QQ group chatting bot based on Coolq, Coolq http api and Nonebot which takes advantages on Python's [asyncio](https://docs.python.org/3/library/asyncio.html) mechanisms thus supporting a high volume of message i/o. I do provide useful plugins extended from Nonebot framework to ensure the bot operates at an acceptable and useable level.
-Like what was described on Nonebot,  I only run on over Python 3.6.1+ and CoolQ HTTP plugin v4.7+.
+Like what was described on Nonebot,  I only run on over Python 3.7+ and CoolQ HTTP plugin v4.7+.
 
 ### Plugins
 I do
@@ -29,6 +29,9 @@ You can freely only absorb part of this repo to merge it into your own coolq app
      ...
   ```
   * I have plugin documentation, see it and finish initialization.
+
+### Update since March 20 2020
+[NoneBot](https://github.com/richardchien/nonebot) has updated to v3.5.0, abandoning the use of `Context_T` and discarding Python 3.6. As a result, this bot, after bumping versions, only runs above Python 3.7.
 
 ### Related
  * [scripter for sendo erika](https://github.com/cleoold/scripter-for-sendo-erika)

@@ -15,9 +15,9 @@ __plugin_usage__ = r'''feature: 帮助
 @on_command('帮助', aliases=['help', '功能'], permission=SUPERUSER | GROUP_MEMBER)
 async def _(session: CommandSession):
     # get list of all plugins
-    if session.ctx['user_id'] in get_bot().config.SUPERUSERS\
-         and not session.ctx.get('group_id') \
-         and not session.ctx.get('discuss_id'):
+    if session.event['user_id'] in get_bot().config.SUPERUSERS\
+         and not session.event.get('group_id') \
+         and not session.event.get('discuss_id'):
         plugins = [p for p in nonebot.get_loaded_plugins() if p.name]
     else:
         plugins = [p for p in nonebot.get_loaded_plugins() if p.name\

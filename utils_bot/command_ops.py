@@ -21,7 +21,7 @@ def force_private(f: Callable[..., Awaitable]) -> Callable[..., Awaitable]:
     @_wraps(f)
     async def wrapped(*args, **kwargs):
         session: _CommandSession = args[0]
-        if session.ctx.get('group_id') or session.ctx.get('discuss_id'):
+        if session.event.get('group_id') or session.event.get('discuss_id'):
             _log.logger.debug('forbidden private command terminated.')
             session.finish()
         else:

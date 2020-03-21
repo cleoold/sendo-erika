@@ -1,8 +1,8 @@
 aiosqlite== 0.11.0
 aiohttp>=3.5.4
-aiocqhttp>=0.6.7
+aiocqhttp>=1.2.3
 beautifulsoup4>=4.8.2
-nonebot>=1.2.2
+nonebot>=1.5.0
 jieba==0.42.1
 pytz>=2019.3
 translate==3.5.0
