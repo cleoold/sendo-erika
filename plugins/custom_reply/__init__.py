@@ -94,10 +94,15 @@ async def handle_keyword_reply(ctx: Event):
                 if re.search(keyword, textReceived):
                     toSend: str = process_var(ctx, random.choice(reply))
                     raise _Get_Out
-        except Exception:
+        except KeyError:
+            # REPLIES[str(groupId)] may not exist, go to global
+            pass
+        except _Get_Out:
+            break
+    try:
+        toSend
             # waits few secs before sending message
             await asyncio.sleep(random.randint(1,5))
-    try:
         await bot.send_group_msg(group_id=currentGroupId, message=toSend)
     except NameError:
         pass
