@@ -26,15 +26,19 @@ __plugin_usage__ = r'''feature: 自定义回复
 
 # define reply data file path
 DATA_PATH = path.join(path.dirname(__file__), 'group_data.json')
-if not path.exists(DATA_PATH):
-    with open(DATA_PATH, 'w') as datafile:
-        json.dump(
-            {"global": {"full_match": {},
-                        "inclusive_match": {},
-                        "regex_match" : {}} },
-        datafile, indent=4)
+
+DEFAULT_GROUP_DICT: dict = {
+    "full_match": {},
+    "inclusive_match": {},
+    "regex_match" : {}
+}
 
 def load_data() -> dict:
+    if not path.exists(DATA_PATH):
+        with open(DATA_PATH, 'w') as datafile:
+            json.dump({
+                "global": DEFAULT_GROUP_DICT
+            }, datafile, indent=4)
     with open(DATA_PATH) as datafile:
         return json.load(datafile)
 
@@ -101,8 +105,8 @@ async def handle_keyword_reply(ctx: Event):
             break
     try:
         toSend
-            # waits few secs before sending message
-            await asyncio.sleep(random.randint(1,5))
+        # waits few secs before sending message
+        await asyncio.sleep(random.randint(1,5))
         await bot.send_group_msg(group_id=currentGroupId, message=toSend)
     except NameError:
         pass
@@ -122,48 +126,43 @@ class keyword_ops:
         :param keyword: keyword
         :param reply: reply
         """
-        self.repliesDict: dict = repliesDict
+        if order not in ('add', 'del', 'delall', 'view'):
+            raise Exception("指令错误\n" + FAILED_MSG)
+        if not groupId.isdecimal() and groupId != 'global':
+            raise Exception("群号错误\n" + FAILED_MSG)
+        if order != 'delall':
+            if mode == '1':
+                self.modeStr: str = 'full_match'
+            elif mode == '2':
+                self.modeStr: str = 'inclusive_match'
+            elif mode == '3':
+                self.modeStr: str = 'regex_match'
+            else:
+                raise Exception("模式错误\n" + FAILED_MSG)
+
+        from copy import deepcopy
+        self.repliesDict: dict = deepcopy(repliesDict)
         self.order: str = order
         self.groupId: str = groupId
         self.mode: str = mode
         self.keyword: str = keyword
         self.reply: str = reply
 
-    
-    def translate_mode(self):
-        if self.order != 'delall':
-            if self.mode == '1':
-                self.modeStr: str = 'full_match'
-            elif self.mode == '2':
-                self.modeStr: str = 'inclusive_match'
-            elif self.mode == '3':
-                self.modeStr: str = 'regex_match'
-            else:
-                raise Exception("模式错误\n" + FAILED_MSG)
-    
-    def add(self, force=False):
-        if self.order == 'add' or force:
-            self.repliesDict.setdefault(self.groupId, {'full_match': {},
-                                                        'inclusive_match': {},
-                                                        'regex_match': {} })
-            
-            modifyPlace = self.repliesDict[self.groupId][self.modeStr]
-            modifyPlace.setdefault(self.keyword, [])
-            modifyPlace[self.keyword].append(self.reply)
-    
-    def dele(self, force=False):
-        if self.order == 'del' or force:
-            del self.repliesDict[self.groupId][self.modeStr][self.keyword]
-    
-    def delall(self, force=False):
-        if self.order == 'delall' or force:
-            if self.groupId == 'global':
-                self.repliesDict['global'] = {"full_match": {},
-                                                "inclusive_match": {},
-                                                "regex_match" : {} }
-            else:
-                del self.repliesDict[self.groupId]
-    
+    def add(self):
+        self.repliesDict.setdefault(self.groupId, DEFAULT_GROUP_DICT)
+        modifyPlace = self.repliesDict[self.groupId][self.modeStr]
+        modifyPlace.setdefault(self.keyword, [])
+        modifyPlace[self.keyword].append(self.reply)
+
+    def dele(self):
+        del self.repliesDict[self.groupId][self.modeStr][self.keyword]
+
+    def delall(self):
+        if self.groupId == 'global':
+            self.repliesDict['global'] = DEFAULT_GROUP_DICT
+        else:
+            del self.repliesDict[self.groupId]
+
     @staticmethod
     def backup():
         from shutil import copyfile
@@ -177,10 +176,8 @@ class keyword_ops:
         return self.repliesDict
 
     def view_keywords(self) -> str:
-        'returns the keyword pairs for group --> mode'
-        
+        'NOTHROW. returns the keyword pairs for group --> mode'
         try:
-            self.translate_mode()
             pos: dict = self.repliesDict[self.groupId][self.modeStr]
             res: str = f'{self.groupId}, {self.modeStr}\n'
             for k, v in pos.items():
@@ -193,18 +190,19 @@ class keyword_ops:
         except KeyError:
             res = '群号错误？'
         return res
-    
+
     def modify_keywords(self) -> dict:
         'modifies the keyword json file, returns the new keyword dict'
-
-        self.translate_mode()
         try:
-            self.add()
-            self.dele()
-            self.delall()
+            if self.order == 'add':
+                self.add()
+            elif self.order == 'del':
+                self.dele()
+            elif self.order == 'delall':
+                self.delall()
         except KeyError:
             raise Exception('当前关键字表不可用或无此关键字')
-        
+
         try:
             self.backup()
         except Exception as exc:
@@ -220,38 +218,30 @@ class keyword_ops:
 async def keyword_mod(session: CommandSession):
 
     try:
-        order, groupId, mode, keyword, reply = '', '', '', '', ''
-
+        order, groupId, mode = '', '', ''
         iniParam: list = session.get('iniParam')
-        order, groupId = iniParam[0], iniParam[1]
+        order = iniParam[0]
+        groupId = iniParam[1]
         mode = iniParam[2]
     except Exception:
         pass
     log.logger.debug(f'keyword modification called: {order}; {groupId}; {mode}')
-
-    # check args
-    if not ((order in ['add', 'del', 'delall', 'view'])\
-        and (groupId.isdecimal() or groupId == 'global')):
-        session.finish("指令或群号错误\n" + FAILED_MSG)
     ##################################################################
-    
+
     global REPLIES
     # get keyword mod object
-    from copy import deepcopy
-    keymod = keyword_ops(deepcopy(REPLIES), order, groupId, mode)
+    try:
+        keymod = keyword_ops(REPLIES, order, groupId, mode)
+    except Exception as exc:
+        session.finish(str(exc))
     # VIEW order
     if order == 'view':
-        try:
-            session.finish(keymod.view_keywords())
-        except Exception as exc:
-            session.finish(str(exc))
+        session.finish(keymod.view_keywords())
     # MODIFY order
     if order in ['add', 'del']:
-        keyword = session.get('keyword', prompt='在这里输入关键字')
+        keymod.keyword = session.get('keyword', prompt='在这里输入关键字')
     if order == 'add':
-        reply = session.get('reply', prompt='在这里输入回复')
-    
-    keymod.keyword, keymod.reply = keyword, reply
+        keymod.reply = session.get('reply', prompt='在这里输入回复')
     try:
         REPLIES = keymod.modify_keywords()
         session.finish('success!')
