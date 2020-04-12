@@ -41,23 +41,23 @@ class Records(dict):
             return
         record.count += 1
         if record.count == wait_until:
-            await bot.send_group_msg(group_id=group_id, message=msg)
             record.count = -999
-    
+            await bot.send_group_msg(group_id=group_id, message=msg)
+
     async def you_repeat(self, group_id:str, msg:str, delay:int=0):
         'used when message starts with "我"'
         record = self.get_record(group_id, msg)
         if random.choice((0,0,0,0,1)):
             if msg_is_calling_me(msg):
                 return
-            await asyncio.sleep(delay)
+            record.count = -999
             newMsg = []
             for char in msg:
                 if char == '我': newMsg.append('你')
                 elif char == '你': newMsg.append('我')
                 else: newMsg.append(char)
+            await asyncio.sleep(delay)
             await bot.send_group_msg(group_id=group_id, message=''.join(newMsg))
-            record.count = -999
 
 records: Dict[str, Record] = Records()
 
