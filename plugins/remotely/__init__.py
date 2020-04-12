@@ -23,9 +23,7 @@ class ops:
     @staticmethod
     async def send_to_x(session: CommandSession, msg_type: str, unescape_=False):
         bot = get_bot()
-        param = session.get('param')
-        paramSplit = param.split(' ', 1)
-        targetId, toSend = paramSplit[0], paramSplit[1]
+        targetId, toSend = session.get('id'), session.get('msg')
         if unescape_:
             toSend = unescape(toSend)
 
@@ -40,12 +38,13 @@ class ops:
     
     @staticmethod
     async def arg_parser_x(session: CommandSession):
-        argStripped = session.current_arg.strip()
-        if argStripped:
-            session.state['param'] = argStripped
+        argStripped = session.current_arg.strip() or ''
+        args = argStripped.split(' ', 1)
+        if len(args) == 2:
+            session.state['id'] = args[0]
+            session.state['msg'] = args[1]
         else:
-            await session.send('用法：\n发送到群/QQ [群号/QQ] [内容]')
-            session.finish()
+            session.finish('用法：\n发送到群/QQ [群号/QQ] [内容]')
 
 @on_command('发送到群', permission=SUPERUSER, privileged=True)
 async def send_to_group(session: CommandSession):
