@@ -67,7 +67,7 @@ async def _(session: CommandSession):
         else:
             session.finish(__plugin_usage__)
 # EXP
-@on_natural_language(keywords={'天气'})
+@on_natural_language(keywords={'天气'}, permission=SUPERUSER | GROUP_MEMBER)
 async def _(session: NLPSession):
     argsStripped = session.msg_text.strip()
     words = list(posseg.lcut(argsStripped))

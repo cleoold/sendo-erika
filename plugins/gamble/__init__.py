@@ -54,12 +54,12 @@ async def _(session: CommandSession):
 
 
 # EXP
-@on_natural_language(keywords={'骰子', '色子'})
+@on_natural_language(keywords={'骰子', '色子'}, permission=SUPERUSER | GROUP_MEMBER)
 async def _(session: NLPSession):
     times = next(random_ops.nl_proc(session))
     return IntentCommand(64.0, '扔骰子', current_arg=times or None)
 
-@on_natural_language(keywords={'硬币', '钢镚'})
+@on_natural_language(keywords={'硬币', '钢镚'}, permission=SUPERUSER | GROUP_MEMBER)
 async def _(session: NLPSession):
     times = next(random_ops.nl_proc(session))
     return IntentCommand(64.0, '扔硬币', current_arg=times or None)
