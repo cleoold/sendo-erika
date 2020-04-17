@@ -1,6 +1,6 @@
 import random as _random
 
-from .typing import Any, Iterable
+from .typing import T, Sequence
 
 # fixes aligning problems for multibyte characters
 def my_ljust(s, n, fillchar=' ') -> str:
@@ -16,12 +16,13 @@ def half_none(s: str) -> str:
     return s if _random.choice((0,1,)) else ''
 
 
-def prob_pick(itera: Iterable[Any], probs: Iterable[float]) -> Any:
+def prob_pick(itera: Sequence[T], probs: Sequence[float]) -> T:
     ''''picks elements randomly from [iter] according to the cumulative
     probability array [probs] which has the same length and ranges from 0 to 1'''
     chosen: float = _random.random()
-    if 0 < chosen < probs[0]:
+    if 0 <= chosen < probs[0]:
         return itera[0]
     for j in range(len(itera)-1):
-        if probs[j] < chosen < probs[j+1]:
+        if probs[j] <= chosen < probs[j+1]:
             return itera[j+1]
+    return itera[len(itera)-1]
