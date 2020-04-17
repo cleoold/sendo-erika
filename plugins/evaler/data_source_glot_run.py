@@ -16,29 +16,29 @@ TOKEN: str = get_bot().config.GLOT_RUN_TOKEN
 
 SUPPORTED_LANGS: dict = {
     'assembly': {'ext': 'asm'},
-#    'bash': {'ext': 'sh'},
+    'bash': {'ext': 'sh'},
     'c': {'ext': 'c'},
     'clojure': {'ext': 'clj'},
-#    'coffeescript': {'ext': 'coffe'},
+    'coffeescript': {'ext': 'coffe'},
     'cpp': {'ext': 'cpp'},
     'csharp': {'ext': 'cs'},
-#    'erlang': {'ext': 'erl'},
-#    'fsharp': {'ext': 'fs'},
+    'erlang': {'ext': 'erl'},
+    'fsharp': {'ext': 'fs'},
     'go': {'ext': 'go'},
-#    'groovy': {'ext': 'groovy'},
+    'groovy': {'ext': 'groovy'},
     'haskell': {'ext': 'hs'},
     'java': {'ext': 'java', 'name': 'Main'},
     'javascript': {'ext': 'js'},
-#    'julia': {'ext': 'jl'},
-#    'kotlin': {'ext': 'kt'},
+    'julia': {'ext': 'jl'},
+    'kotlin': {'ext': 'kt'},
     'lua': {'ext': 'lua'},
     'perl': {'ext': 'pl'},
     'php': {'ext': 'php'},
     'python': {'ext': 'py'},
     'ruby': {'ext': 'rb'},
-#    'rust': {'ext': 'rs'},
-#    'scala': {'ext': 'scala'},
-#    'swift': {'ext': 'swift'},
+    'rust': {'ext': 'rs'},
+    'scala': {'ext': 'scala'},
+    'swift': {'ext': 'swift'},
     'typescript': {'ext': 'ts'},
 }
 
@@ -59,12 +59,12 @@ async def fetch(lang: str, code: str) -> Union[dict, None]:
                     'command': ''}) as req:
                 payload: dict = await req.json()
                 assert isinstance(payload, dict)
-        except BaseException:
+        except Exception:
             return None
 
     return payload
 
-def process_result(payload: dict) -> str:
+def process_result(payload: Union[dict, None]) -> str:
     if payload is None:
         return '不可用'
     res: str = ''
@@ -76,8 +76,8 @@ def process_result(payload: dict) -> str:
             lines, linesRemain = lines[:15], lines[15:]
             out, outRemain = val[:80 * 10], val[80 * 10:]
 
-            isCut: str = ('', '(输出过长，已截断)\n')[bool(linesRemain or outRemain)]
-            Add2End: str = ('\n', '')[bool(val) or k == 'error']
+            isCut = '(输出过长，已截断)\n' if linesRemain or outRemain else ''
+            Add2End = '' if val or k == 'error' else '\n'
             res += f'{k}: {isCut}{out}{Add2End}'
 
     except Exception:

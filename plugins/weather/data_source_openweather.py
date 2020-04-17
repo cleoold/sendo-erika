@@ -22,18 +22,18 @@ URL_MODE: str = '&units=metric&cnt=25&q='
 #city
 
 # fetch weather json data
-async def fetch(*city: str) -> dict:
+async def fetch(city: str) -> dict:
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}
     async with aiohttp.ClientSession() as session:
         try:
             async with session.get(
-                    f'{URL_BASE}{API_KEY}{URL_MODE}{city[0]}',
+                    f'{URL_BASE}{API_KEY}{URL_MODE}{city}',
                     headers=headers, timeout=10, ssl=False) as r:
                 res = json.loads(await r.text())
                 status = res['cod'].lower()
                 assert status == '200' or status == '404'
                 return res
-        except BaseException:
+        except Exception:
             return None
 
 # yields weather data
@@ -64,8 +64,10 @@ region: {city}, {nation}, time diff from UTC: {timezone/60/60}h
                 weatherChart = directChart['weather'][0]
                 windChart = directChart['wind']
                 # if tempMin and tempMax are same, only display one temp
-                tempMin, tempMax = mainChart['temp_min'], mainChart['temp_max']
-                temp = (f'{tempMin}-{tempMax}°C', f'{tempMin}°C')[tempMin == tempMax]
+                tempMin = mainChart['temp_min']
+                tempMax = mainChart['temp_max']
+                temp =  f'{tempMin}°C' if tempMin == tempMax \
+                    else f'{tempMin}-{tempMax}°C'
                 yield \
 f'''{directChart['dt_txt'][:16]}: {weatherChart['main']} ({weatherChart['description']}), {temp}
     wind: {windChart['speed']}m/s ({windChart['deg']}°), humidity: {mainChart['humidity']}, pressure: {mainChart['pressure']}hPa'''
@@ -73,5 +75,5 @@ f'''{directChart['dt_txt'][:16]}: {weatherChart['main']} ({weatherChart['descrip
             pass
     return heading + '\n'.join(resGen())
 
-async def openweathermap_weather(*city: str):
-    return process_weatherdata(await fetch(*city))
+async def openweathermap_weather(city: str):
+    return process_weatherdata(await fetch(city))

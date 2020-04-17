@@ -1,14 +1,9 @@
-import threading as _threading
-from contextlib import contextmanager as _contextmanager
 from functools import wraps as _wraps
-import random as _random
 
 from nonebot import CommandSession as _CommandSession
 from nonebot import log as _log
 from nonebot import on_command as _on_command
 from nonebot.command import CommandHandler_T
-
-import _thread
 
 from .typing import Awaitable, Callable, Generator, Iterable
 
@@ -28,25 +23,6 @@ def force_private(f: Callable[..., Awaitable]) -> Callable[..., Awaitable]:
             return await f(*args, **kwargs)
     return wrapped
 
-
-# context manager
-"""
-@_contextmanager
-def time_limit(seconds: int, msg:str=''):
-    ''' limits the running time of statements inside a with block  
-    :seconds: stops after [seconds]  
-    :msg: message to display in logs  
-    what the fak, it terminates the programme
-    '''
-    timer = _threading.Timer(seconds, lambda: _thread.interrupt_main())
-    timer.start()
-    try:
-        yield
-    except KeyboardInterrupt:
-        _log.logger.debug(f'time out for operation {msg}')
-        raise TimeoutError
-    finally:
-        timer.cancel()"""
 
 ##############################################################################
 # these features are subject to low efficiencies, and generate 

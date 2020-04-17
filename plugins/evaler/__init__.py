@@ -43,19 +43,20 @@ async def _(session: CommandSession):
         if argsStripped:
             argsList: list = argsStripped.split('\n', 1)
             if len(argsList) < 2:
-                session.finish()
-            
-            argv1, argv2 = argsList[0].strip().lower(), argsList[1]
-            #log.logger.debug(f'argv1: {argv1}, argv2:{argv2}')
-            # manual correction
-            if argv1 == 'py': argv1 = 'python'
-            if argv1 == 'c++': argv1 = 'cpp'
-            if argv1 == 'c#': argv1 = 'csharp'
-            if argv1 == 'js': argv1 = 'javascript'
+                session.finish(__plugin_usage__)
 
-            if not argv1 in SUPPORTED_LANGS.keys():
+            lang, code = argsList[0].strip().lower(), argsList[1]
+            #log.logger.debug(f'lang: {lang}, code:{code}')
+            # manual correction
+            if lang == 'py': lang = 'python'
+            if lang == 'c++': lang = 'cpp'
+            if lang == 'c#': lang = 'csharp'
+            if lang == 'js': lang = 'javascript'
+            if lang == 'f#': lang = 'fsharp'
+
+            if not lang in SUPPORTED_LANGS.keys():
                 session.finish('当前语言不支持~')
-            
-            session.state['args'] = (argv1, argv2)
+
+            session.state['args'] = (lang, code)
         else:
             session.finish(__plugin_usage__)

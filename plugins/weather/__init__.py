@@ -50,7 +50,7 @@ async def weather(session: CommandSession):
     # OpenWeatherMap (delete block if you do not need)
     else:
         # openweathermap needs an English city name
-        city = (city, util.translate2Eng(city))[isChinese]
+        city = util.translate2Eng(city) if isChinese else city
         weatherReport = await openweathermap_weather(city)
     
     #log.logger.debug(city)
