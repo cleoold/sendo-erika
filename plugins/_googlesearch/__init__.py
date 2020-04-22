@@ -3,6 +3,8 @@ from time import time
 from nonebot import CommandSession, on_command, log
 from nonebot.permission import *
 
+from utils_bot.typing import depreciated
+
 from .data_source import getGoogling
 
 __plugin_name__ = 'google'
@@ -17,6 +19,7 @@ lastCall = time()
 COOLDOWN = 40
 
 @on_command('google', permission=SUPERUSER | GROUP_MEMBER)
+@depreciated
 async def google(session: CommandSession):
     global lastCall
     if time() - lastCall > COOLDOWN:
@@ -32,6 +35,7 @@ async def google(session: CommandSession):
         await session.send(f'技能冷却中…… ({COOLDOWN}s)')
 
 @google.args_parser
+@depreciated
 async def _(session: CommandSession):
     paramStr = session.current_arg_text
     # if arg list is not empty

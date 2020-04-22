@@ -6,9 +6,9 @@ __plugin_name__ = '帮助'
 __plugin_usage__ = r'''feature: 帮助
 
 帮助        获取帮助
-(with params)
+参数：
 [功能名]            获取特定功能的帮助
-(example)
+例子：
 千堂帮助 google
 '''
 

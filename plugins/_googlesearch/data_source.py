@@ -3,6 +3,8 @@ import re
 from aiohttp import request
 import bs4
 
+from utils_bot.typing import depreciated
+
 # 052219: adding browser headers creates cache in resulting page
 _headers = { 
              'Cache-Control': 'private, max-age=0, no-cache',
@@ -14,6 +16,7 @@ _headers = {
              'Upgrade-Insecure-Requests': '1' }
 _browser = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0' }
 
+@depreciated
 async def getGoogling(*keyword) -> str:
     header = _headers
     res = '>_< '

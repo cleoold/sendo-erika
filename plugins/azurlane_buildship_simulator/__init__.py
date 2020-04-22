@@ -6,7 +6,7 @@ __plugin_name__ = '碧蓝航线建造模拟'
 __plugin_usage__ = r'''feature: 碧蓝航线建造模拟
 可用命令：
 轻型舰建造，重型舰建造，特型舰建造
-(with params)
+参数：
 [次数]次            不超过10次
 attribution @ 碧蓝航线海事局
 '''

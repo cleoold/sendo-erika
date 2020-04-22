@@ -5,11 +5,11 @@ from nonebot.permission import *
 
 from .data_source import get_baidu_trend
 
-__plugin_name__ = '百度热搜获取'
+__plugin_name__ = '百度热搜'
 __plugin_usage__ = r'''feature: 百度热搜获取
 
 百度热搜        获取前6条热搜
-(with params)
+参数：
 all            获取全部热搜
 '''
 

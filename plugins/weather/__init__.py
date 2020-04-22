@@ -12,7 +12,7 @@ __plugin_name__ = '天气 *NL'
 __plugin_usage__ = r'''feature: 查询天气
 
 天气 [城市]       获取天气预报
-(source)
+来源：
 CN: AMAP, https://www.amap.com/
 EN: openweathermap http://api.openweathermap.org/
 '''

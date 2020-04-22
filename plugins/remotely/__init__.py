@@ -2,21 +2,20 @@ from nonebot import CommandSession, on_command, get_bot, load_plugins
 from nonebot.permission import *
 from nonebot.message import unescape
 
+from utils_bot.typing import depreciated
+
 __plugin_name__ = '遥控机器人 (private)'
 __plugin_usage__ = r'''feature: 遥控
-    发送消息：
-    发送到群 [群号] [内容]
-    发送到QQ [QQ号] [内容]
+发送消息：
+发送到群 [群号] [内容]
+发送到QQ [QQ号] [内容]
 
-    发送CQ码：
-    发送到群CQ [群号] [内容]
-    发送到QQCQ [QQ号] [内容]
+发送CQ码：
+发送到群CQ [群号] [内容]
+发送到QQCQ [QQ号] [内容]
 
-    查看已加入的群：
-    所在的群
-
-    重置已加载的插件：
-    重置插件
+查看已加入的群：
+所在的群
 '''
 
 class ops:
@@ -80,6 +79,7 @@ async def groups_in(session: CommandSession):
     await session.send(res)
 
 @on_command('重置插件', permission=SUPERUSER, privileged=True)
+@depreciated
 async def reset_plugins(session: CommandSession):
     from os import path
     load_plugins(path.join('.', 'plugins'), 'plugins')
