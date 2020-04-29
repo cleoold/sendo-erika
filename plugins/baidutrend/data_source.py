@@ -39,5 +39,5 @@ async def get_baidu_trend(opt: str) -> str:
             res += my_ljust(titles[j].getText(), 20) + my_rjust(pops[j].getText(), 10) + '\n'
         res += 'fetched %s with love. Source: www.baidu.com' % getTime()
         return res
-    except Exception as exc:
-        return exc # an error occurred
+    except Exception:
+        return 'an error occurred'

@@ -1,4 +1,5 @@
 from functools import wraps as _wraps
+from time import time as _time
 
 from nonebot import CommandSession as _CommandSession
 from nonebot import log as _log
@@ -22,6 +23,24 @@ def force_private(f: Callable[..., Awaitable]) -> Callable[..., Awaitable]:
         else:
             return await f(*args, **kwargs)
     return wrapped
+
+
+def global_cooldown(cooldown: int):
+    '''limit the rate of a command globally
+    '''
+    def deco(f: Callable[..., Awaitable]) -> Callable[..., Awaitable]:
+        lastcall = 0.0
+        @_wraps(f)
+        async def wrapped(*args, **kwargs):
+            session: _CommandSession = args[0]
+            nonlocal lastcall
+            if _time() - lastcall > cooldown:
+                await f(*args, **kwargs)
+                lastcall = _time()
+            else:
+                await session.send(f'技能冷却中…… ({cooldown}s)')
+        return wrapped
+    return deco
 
 
 ##############################################################################

@@ -1,9 +1,9 @@
-from time import time
-
-from nonebot import on_command, CommandSession, log
+from nonebot import CommandSession, log, on_command
 from nonebot.permission import *
 
-from .data_source_glot_run import code_run_glot, SUPPORTED_LANGS
+from utils_bot.command_ops import global_cooldown
+
+from .data_source_glot_run import SUPPORTED_LANGS, code_run_glot
 
 __plugin_name__ = 'coderunner'
 __plugin_usage__ = f'''feature: 执行代码
@@ -18,22 +18,14 @@ print(1+1)
 attribution: https://glot.io
 '''
 
-lastCall = time()
-COOLDOWN = 15
 
 @on_command('coderunner', aliases=('运行', '编译', 'run', 'exe'), permission=SUPERUSER | GROUP_MEMBER, only_to_me=False)
+@global_cooldown(15)
 async def coderunner(session: CommandSession):
-    global lastCall
-    if time() - lastCall > COOLDOWN:
-        argsList: str = session.get('args')
-
-        res = await code_run_glot(argsList[0], argsList[1])
-        await session.send(res)
-
-        lastCall = time()
-        log.logger.debug(f'coderunner called: {res[:20]}...')
-    else:
-        await session.send(f'技能冷却中…… ({COOLDOWN}s)')
+    argsList: tuple = session.get('args')
+    res = await code_run_glot(argsList[0], argsList[1])
+    await session.send(res)
+    log.logger.debug(f'coderunner called: {res[:20]}...')
 
 @coderunner.args_parser
 async def _(session: CommandSession):

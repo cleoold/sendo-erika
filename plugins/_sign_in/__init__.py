@@ -46,7 +46,7 @@ bot = get_bot()
 @bot.server_app.before_serving
 async def initialize_db():
     async with SignInSession(SIGN_IN_DB_PATH, 0, 0) as table_init:
-        log.logger.debug('loading signin db...')
+        log.logger.info('loading signin db...')
         await table_init.init_table()
         await table_init.commit()
 
