@@ -93,6 +93,7 @@ from nonebot.default_config import *
 ## :::::::::DDDGEGGDGGDEEEEEEEEDDGLLLDEDGLLLLGDEDDDKEKLLGDDEGGDEEEEKKEEEKKKKEDEEEDDDEEEEGLLGD
 
 SUPERUSERS = { }
+SELF_QQ = 0
 COMMAND_START = {''}
 NICKNAME = {'千堂', '千堂 瑛理華', '千堂瑛理華', '千堂瑛理华',
             '千堂 瑛理华', '千堂瑛里华', '千堂 瑛里华', '瑛里华', '瑛理华', 'erika'}

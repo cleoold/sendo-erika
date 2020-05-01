@@ -1,9 +1,10 @@
 ### START
 
 open config_bot.py and modify:
-  *  `SUPERUSERS: dict` This contains all qq IDs that have full control to the bot, type yours here.
-  *  `COMMAND_START: dict` the prefix to call the bot. If you have an empty string `''` this means no prefix will be used.
-  *  `NICKNAME: dict` Applies only in a group chat, except special settings, the bot will respond only to those messages which start with an `@` or this nickname, for example:
+  *  `SUPERUSERS: dict[int]` This contains all qq IDs that have full control to the bot, type yours here.
+  *  `SELF_QQ: int` Bot's qq.
+  *  `COMMAND_START: dict[str]` the prefix to call the bot. If you have an empty string `''` this means no prefix will be used.
+  *  `NICKNAME: dict[str]` Applies only in a group chat, except special settings, the bot will respond only to those messages which start with an `@` or this nickname, for example:
   ```python
      千堂查天气 new york # responds
      查天气 new york # does not respond
