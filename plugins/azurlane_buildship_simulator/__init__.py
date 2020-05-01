@@ -6,9 +6,9 @@ __plugin_name__ = '碧蓝航线建造模拟'
 __plugin_usage__ = r'''feature: 碧蓝航线建造模拟
 可用命令：
 轻型舰建造，重型舰建造，特型舰建造
-参数：
+参数:
 [次数]次            不超过10次
-attribution @ 碧蓝航线海事局
+attribution @ 碧蓝航线wiki
 '''
 
 @on_command('碧蓝航线建造模拟', aliases=('碧蓝航线建造'), permission=GROUP_MEMBER | SUPERUSER)
@@ -46,4 +46,4 @@ async def build_command_arg_parse(session: CommandSession):
         except AssertionError:
             session.finish('次数太多啦~')
     else:
-        session.state['times'] = None
+        session.state['times'] = 10 #default

@@ -6,25 +6,23 @@ __all__ = ['mass_ship_build_light',
            'mass_ship_build_heavy', 
            'mass_ship_build_aircraft']
 
-DEFAULT_TIMES: int = 10
-
 
 def mass_ship_build(build_list: dict,
-                    *probabilities: int,
-                    times:int=DEFAULT_TIMES) -> str:
+                    cuml: list,
+                    times: int) -> str:
     '''probabilities is a tuple(list) of four (last one is always 100) integers, 
     corresponding to the official game'''
-    resList: list = []
+    resList = []
 
     for _ in range(times):
         randomed: int = random.randint(1, 100)
-        if 1 <= randomed <= probabilities[0]:
+        if 1 <= randomed <= cuml[0]:
             resList.append(
                 '*SSS* ' + random.choice(build_list.get('super_rare')))
-        elif probabilities[0] < randomed <= probabilities[1]:
+        elif cuml[0] < randomed <= cuml[1]:
             resList.append(
                 '*S* ' + random.choice(build_list.get('elite')))
-        elif probabilities[1] < randomed <= probabilities[2]:
+        elif cuml[1] < randomed <= cuml[2]:
             resList.append(
                 random.choice(build_list.get('rare')))
         else:
@@ -32,23 +30,11 @@ def mass_ship_build(build_list: dict,
                 random.choice(build_list.get('normal')))
     return '\n'.join(resList)
 
-def mass_ship_build_light(times:int=DEFAULT_TIMES) -> str:
-    return mass_ship_build(LIGHTSHIP_LIST,
-                           LIGHTSHIP_SUPERRARE_CUML_PROB,
-                           LIGHTSHIP_ELITE_CUML_PROB,
-                           LIGHTSHIP_RARE_CUML_PROB,
-                           **({'times': times} if times else {}))
+def mass_ship_build_light(times: int) -> str:
+    return mass_ship_build(SHIP_LIST['light'], SHIP_CUML_PROB['light'], times)
 
-def mass_ship_build_heavy(times:int=DEFAULT_TIMES) -> str:
-    return mass_ship_build(HEAVYSHIP_LIST,
-                           HEAVYSHIP_SUPERRARE_CUML_PROB,
-                           HEAVYSHIP_ELITE_CUML_PROB,
-                           HEAVYSHIP_RARE_CUML_PROB,
-                           **({'times': times} if times else {}))
+def mass_ship_build_heavy(times: int) -> str:
+    return mass_ship_build(SHIP_LIST['heavy'], SHIP_CUML_PROB['heavy'], times)
 
-def mass_ship_build_aircraft(times:int=DEFAULT_TIMES) -> str:
-    return mass_ship_build(AIRCRAFT_LIST,
-                           AIRCRAFT_SUPERRARE_CUML_PROB,
-                           AIRCRAFT_ELITE_CUML_PROB,
-                           AIRCRAFT_RARE_CUML_PROB,
-                           **({'times': times} if times else {}))
+def mass_ship_build_aircraft(times: int) -> str:
+    return mass_ship_build(SHIP_LIST['aircraft'], SHIP_CUML_PROB['aircraft'], times)
