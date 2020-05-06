@@ -1,12 +1,12 @@
-import random
 from os import path
 
-from nonebot import CommandSession, log, on_command, get_bot
+from nonebot import CommandSession, get_bot, log, on_command
 from nonebot.permission import *
 
 from utils_bot.typing import Tuple
 
 from .execute import SignInSession, generate_luck_result
+from .greets import get_greeting
 
 ## this plugin overlaps with test_rp plugin
 ## 和 test_rp （今日运气）功能重合，欲启用此请先停用 test_rp 
@@ -16,31 +16,10 @@ __plugin_usage__ = f'''feature: 要不要看一看自己的人品？
 功能：签到，签到信息，今日运气
 '''
 
-SOME_GREETINGS = [
-    '因为没办法才照顾你的哟，麻烦好好地感谢我一下！',
-    '麻烦好好地照顾我一下！',
-    '我是学院中最有人气的女生。',
-    '要想获得本大小姐的青睐，可不是件容易的事噢？',
-    '我——是——大——小——姐！',
-    '请挺起胸膛、在这里我们才是主角！',
-    '你知不知道、好奇心会杀死猫这句话？',
-    '啊……嗯？',
-    '呐，以后打算怎么办啊？',
-    '不过算了。因为我现在心情很好。',
-    '一，一大早的说什么呢你！',
-    '谢，谢……',
-    '好了，一鼓作气地上吧！',
-    '星空好美啊',
-    '人们会有点寂寞吧，那样子……',
-    '为什么在发抖？',
-    '呐，到底是哪里？',
-    '如果会后悔的话，就不会来这里了。',
-    '那也太凄凉了吧。我会花些心思的。'
-]
-
-SIGN_IN_DB_PATH = path.join(path.dirname(__file__), 'signin.db')
 
 bot = get_bot()
+
+SIGN_IN_DB_PATH = path.join(path.dirname(__file__), 'signin.db')
 
 # initialize db obsolete
 @bot.server_app.before_serving
@@ -70,13 +49,13 @@ async def sign_in(session: CommandSession):
         await signin_session.commit()
         if status:
             await session.send(
-                f'{random.choice(SOME_GREETINGS)} 好感度：{score} (+{added})', 
+                f'{get_greeting(score)} 好感度：{score} (+{added})', 
                 at_sender=True)
         else:
             await session.send(
                 f'今日签到过啦~ 好感度：{score}', 
                 at_sender=True)
-    
+
     log.logger.debug(f'{user_id} trying to sign in in group {group_id} success: {status}')
 
 
