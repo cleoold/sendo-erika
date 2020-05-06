@@ -38,4 +38,4 @@ async def _(session: CommandSession):
 async def _(session: NLPSession):
     if session.msg_text[:2] == '点歌':
         return IntentCommand(64.0, '点歌', current_arg=session.msg_text[2:])
-    return IntentCommand(0, '点歌');
+    return IntentCommand(0, '点歌')
