@@ -1,5 +1,6 @@
-from datetime import timedelta
 from nonebot.default_config import *
+
+from utils_bot.datetime import timedelta
 
 ## ::::::::::::::::..::::::::::::::::::::::::::::::::::::::::::::.............:::::::::::::::
 ## :::::::,,,,,::::::..:::,::::::::::::::::,,,:::::,,,,,,:,,:::..::::::::::::...:::::::::::,:
@@ -109,4 +110,3 @@ AMAP_WEATHER_API_KEY = ''
 OPENWEATHERMAP_API_KEY = ''
 
 GLOT_RUN_TOKEN = ''
-

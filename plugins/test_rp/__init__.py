@@ -1,9 +1,9 @@
 import random
-from datetime import datetime
-from pytz import timezone
 
-from nonebot import on_command, CommandSession
+from nonebot import CommandSession, on_command
 from nonebot.permission import *
+
+from utils_bot.datetime import TZ, datetime
 
 __plugin_name__ = '今日运气'
 __plugin_usage__ = f'''feature: 看看今天的运气~
@@ -30,7 +30,7 @@ class TestLuck:
     def generate_luck_result(cls, sender_id: int) -> str:
         senderId: int = sender_id
         timeStamp: int = int(
-            datetime.now().replace(tzinfo=timezone('Asia/Shanghai')).strftime('%m%d%Y')
+            datetime.now(TZ).strftime('%m%d%Y')
             )
         seed: int = (senderId * 2) | (timeStamp * 333)
         random.seed(seed)

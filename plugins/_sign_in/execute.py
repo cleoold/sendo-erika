@@ -1,19 +1,16 @@
+import asyncio
 import random
 import sqlite3
 
-from datetime import datetime
-
-from pytz import timezone
-
 import aiosqlite
-import asyncio
 
+from utils_bot.datetime import TZ, datetime
 from utils_bot.typing import Tuple, Union
 
 
 def today_to_str() -> str:
     return str(
-        datetime.now().replace(tzinfo=timezone('Asia/Shanghai')).strftime('%m%d%Y')
+        datetime.now(TZ).strftime('%m%d%Y')
     )
 
 
@@ -125,4 +122,3 @@ class SignInSession(aiosqlite.Connection):
         async with self.execute('SELECT * FROM sign WHERE identity=?', (self.identity,)) as cur:
             currentEntry = await cur.fetchone()
             return user_score_displayed(currentEntry[2]), currentEntry[4], currentEntry[1]
-

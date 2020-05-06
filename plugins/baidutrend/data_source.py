@@ -1,14 +1,13 @@
-from datetime import datetime
-
 import aiohttp
-import bs4 # and lxml
+import bs4  # and lxml
 
+from utils_bot.datetime import TZ, datetime
 from utils_bot.string_ops import my_ljust, my_rjust
 
 
-# gets current time (server end)
+# gets current time
 def getTime() -> str:
-    return datetime.now().strftime('%m-%d %H:%M:%S')
+    return datetime.now(TZ).strftime('%m-%d %H:%M:%S')
 
 # a page that always works for the program purpose 
 url: str = "https://www.baidu.com/s?wd=sousuoredian"

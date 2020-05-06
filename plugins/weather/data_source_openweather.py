@@ -3,7 +3,7 @@
 # sample json fetch:
 # http://api.openweathermap.org/data/2.5/forecast?appid=AAAAAAAAAAAAAAA&q=London&units=metric
 
-from datetime import datetime
+from utils_bot.datetime import datetime
 import json
 import random
 
