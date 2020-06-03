@@ -41,9 +41,19 @@ def generate_luck_result(sender_id: int) -> str:
     return return_luck_by_num(generate_luck_num(sender_id))
 
 
-def user_score_displayed(i: int) -> float:
+def user_score_to_user(i: int) -> float:
     "a user's score is stored in int, but the displayed value is that divided by 100 (by now)" 
     return i / 100
+
+
+def format_score(s: float) -> str:
+    'format the displayed score (好感度) by hearts'
+    if s < 100:
+        return str(s)
+    else:
+        # example: '4.44 ♥' means 104.44
+        return f'{float(s % 100):.4} {"♥" * int(s // 100)}'
+
 
 class SignInSession(aiosqlite.Connection):
 
@@ -101,7 +111,6 @@ class SignInSession(aiosqlite.Connection):
     async def user_sign_in(self) -> Tuple[bool, float, float]:
         '''after user initializing, signs in. one user signs in once a day. 
         returns the successfulness of the signing in. returns the score after signing in. returns the score added'''
-        f = user_score_displayed
 
         today: str = today_to_str()
         async with self.execute('SELECT * FROM sign WHERE identity=?', (self.identity,)) as cur:
@@ -109,16 +118,16 @@ class SignInSession(aiosqlite.Connection):
             scoreBefore: int = currentEntry[2]
             # checks sign in time, refuses if already signed in
             if currentEntry[1] == today:
-                return False, f(scoreBefore), 0
+                return False, user_score_to_user(scoreBefore), 0
             
             scoreAdded: int = int(generate_luck_num(self.user_id) * 100)
             scoreAfter: int = scoreBefore + scoreAdded
             await cur.execute('UPDATE sign SET score=?, lastsign=?, score2=score2+1 WHERE identity=?',
                              (scoreAfter, today, self.identity))
-            return True, f(scoreAfter), f(scoreAdded)
+            return True, user_score_to_user(scoreAfter), user_score_to_user(scoreAdded)
 
     async def user_check(self) -> Tuple[float, int, str]:
         'returns the score, sign-in count, last sign-in time for the user'
         async with self.execute('SELECT * FROM sign WHERE identity=?', (self.identity,)) as cur:
             currentEntry = await cur.fetchone()
-            return user_score_displayed(currentEntry[2]), currentEntry[4], currentEntry[1]
+            return user_score_to_user(currentEntry[2]), currentEntry[4], currentEntry[1]

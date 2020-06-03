@@ -5,7 +5,7 @@ from nonebot.permission import *
 
 from utils_bot.typing import Tuple
 
-from .execute import SignInSession, generate_luck_result
+from .execute import SignInSession, format_score, generate_luck_result
 from .greets import get_greeting
 
 ## this plugin overlaps with test_rp plugin
@@ -49,11 +49,11 @@ async def sign_in(session: CommandSession):
         await signin_session.commit()
         if status:
             await session.send(
-                f'{get_greeting(score)} 好感度：{score} (+{added})', 
+                f'{get_greeting(score)} 好感度：{format_score(score)} (+{added})', 
                 at_sender=True)
         else:
             await session.send(
-                f'今日签到过啦~ 好感度：{score}', 
+                f'今日签到过啦~ 好感度：{format_score(score)}', 
                 at_sender=True)
 
     log.logger.debug(f'{user_id} trying to sign in in group {group_id} success: {status}')
@@ -70,7 +70,7 @@ async def check_sign_in_info(session: CommandSession):
         await signin_session.init_user()
         score, count, last = await signin_session.user_check()
         await session.send(
-                    f'\n好感度：{score}\n历史签到次数：{count}\n上次签到：{last[4:]}.{last[:2]}.{last[2:4]}',
+                    f'\n好感度：{format_score(score)}\n历史签到次数：{count}\n上次签到：{last[4:]}.{last[:2]}.{last[2:4]}',
                     at_sender=True)
 
 

@@ -1,11 +1,11 @@
 involke in a group chat like this:
 ```
 > 千堂签到
-@你 [some custom sentences] 好感度：1.8 (+0.4)
+@你 早安！ 好感度：1.8 (+0.4)
 > 千堂签到
 今日签到过啦~ 好感度：1.8
 > 千堂签到信息
-好感度：1.4
+好感度：1.8
 历史签到次数：5
 上次签到：2019.08.27
 ```
@@ -32,6 +32,6 @@ There are some fields that are not used. Feel free to implement.
 
 A row fetch looks like this:
 ```py
-('12345678_7777777', '27082019', 140, '', 5, 0)
+('12345678_7777777', '27082019', 180, '', 5, 0)
 ```
 
