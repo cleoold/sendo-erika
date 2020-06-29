@@ -77,7 +77,7 @@ async def _(session: NLPSession):
         if word.flag == 'ns':
             city = word.word
             break
-    if city == None:
+    if city is None:
         city = ' '.join((word.word for word in words if word.flag == 'eng'))
 
     return IntentCommand(64.0, 'weather', current_arg=city or '')

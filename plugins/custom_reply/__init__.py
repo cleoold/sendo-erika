@@ -77,24 +77,24 @@ class _Get_Out(Exception):
 @bot.on_message('group')
 async def handle_keyword_reply(ctx: Event):
 
-    currentGroupId: str = ctx['group_id']
+    currentGroupId: int = ctx['group_id']
     textReceived: str = ctx['raw_message']
 
     # config specific to groups is prioritized
-    for groupId in (currentGroupId, 'global'):
+    for groupId in (str(currentGroupId), 'global'):
         try:
             # handles full_match
-            for keyword, reply in REPLIES[str(groupId)]['full_match'].items():
-                if textReceived == keyword:
-                    toSend: str = process_var(ctx, random.choice(reply))
-                    raise _Get_Out
+            mayReply = REPLIES[groupId]['full_match'].get(textReceived, None)
+            if mayReply is not None:
+                toSend: str = process_var(ctx, random.choice(mayReply))
+                raise _Get_Out
             # handles inclusive_match
-            for keyword, reply in REPLIES[str(groupId)]['inclusive_match'].items():
+            for keyword, reply in REPLIES[groupId]['inclusive_match'].items():
                 if keyword in textReceived:
                     toSend: str = process_var(ctx, random.choice(reply))
                     raise _Get_Out
             # handles regex_match
-            for keyword, reply in REPLIES[str(groupId)]['regex_match'].items():
+            for keyword, reply in REPLIES[groupId]['regex_match'].items():
                 if re.search(keyword, textReceived):
                     toSend: str = process_var(ctx, random.choice(reply))
                     raise _Get_Out
