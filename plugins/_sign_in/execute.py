@@ -1,4 +1,3 @@
-import asyncio
 import random
 import sqlite3
 
@@ -76,8 +75,8 @@ class SignInSession(aiosqlite.Connection):
 
         def connector() -> sqlite3.Connection:
             return sqlite3.connect(db_name, **kwargs)
-        
-        super().__init__(connector, asyncio.get_event_loop())
+
+        super().__init__(connector)
 
         self.user_id: int = int(user_id)
         self.identity: str = f'{user_id}_{group_id}'
