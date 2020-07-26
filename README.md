@@ -22,7 +22,7 @@ You can freely only absorb part of this repo to merge it into your own coolq app
      docker run --rm -p 9000:9000 -v `pwd`:/home/user/coolq coolq/wine-coolq
   ```
   * Follow https://cqhttp.cc/ to get http api plugin enabled on CoolQ.
-  * then refer to https://none.rclab.tk/guide/ to get familiar with Nonebot
+  * then refer to https://nonebot.cqp.moe/ to get familiar with Nonebot
   * have required dependency: 
   ```
      pip3 install nonebot
