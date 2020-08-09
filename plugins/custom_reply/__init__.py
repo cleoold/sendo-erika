@@ -217,9 +217,9 @@ class keyword_ops:
 @force_private
 async def keyword_mod(session: CommandSession):
 
+    order, groupId, mode = '', '', ''
+    iniParam: list = session.get('iniParam')
     try:
-        order, groupId, mode = '', '', ''
-        iniParam: list = session.get('iniParam')
         order = iniParam[0]
         groupId = iniParam[1]
         mode = iniParam[2]

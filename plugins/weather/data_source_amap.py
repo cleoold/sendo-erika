@@ -17,10 +17,10 @@ API_KEY: str = get_bot().config.AMAP_WEATHER_API_KEY
 # +
 URL_MODE: str = '&extensions=all&city='
 # +
-#city
+# city
 
 # fetch weather json data
-async def fetch(city: str) -> dict:
+async def fetch(city: str) -> Union[dict, None]:
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}
     async with aiohttp.ClientSession() as session:
         try:

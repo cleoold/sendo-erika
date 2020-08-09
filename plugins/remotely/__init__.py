@@ -1,6 +1,7 @@
-from nonebot import CommandSession, on_command, get_bot, load_plugins
-from nonebot.permission import *
+from nonebot import CommandSession, get_bot, load_plugins, on_command
+from nonebot.exceptions import CQHttpError
 from nonebot.message import unescape
+from nonebot.permission import *
 
 from utils_bot.typing import depreciated
 

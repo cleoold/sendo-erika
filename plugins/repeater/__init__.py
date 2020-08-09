@@ -59,7 +59,9 @@ class Records(dict):
             await asyncio.sleep(delay)
             await bot.send_group_msg(group_id=group_id, message=''.join(newMsg))
 
-records: Dict[str, Record] = Records()
+# key: str
+# value: Record
+records = Records()
 
 @bot.on_message('group')
 async def _(ctx: Event):

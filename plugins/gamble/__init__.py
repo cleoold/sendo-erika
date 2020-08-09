@@ -3,7 +3,7 @@ from nonebot import (CommandSession, IntentCommand, NLPSession, on_command,
                      on_natural_language)
 from nonebot.permission import *
 
-from utils_bot.typing import Callable, Generator
+from utils_bot.typing import Callable, Generator, Union
 
 from .diceroll import *
 
@@ -26,7 +26,7 @@ class random_ops:
         await session.send(f(**( {'times': times} if times else {} )))
     
     @staticmethod
-    def nl_proc(session: NLPSession) -> Generator[str, None, None]:
+    def nl_proc(session: NLPSession) -> Generator[Union[str, None], None, None]:
         argsStripped: str = session.msg_text.strip()
         words: Generator = posseg.lcut(argsStripped)
 

@@ -24,16 +24,16 @@ class util:
             if '\u4e00' <= ch <= '\u9fff':
                 return True
         return False
-    
+
     @staticmethod
-    def isAmapSupported(word: str) -> str:
+    def isAmapSupported(word: str) -> bool:
         return word[:2] in CHINESE_CITIES
-    
+
     @staticmethod
     def translate2Eng(word: str) -> str:
         # LOW EFFICIENCY MANUAL CORRECTION
         if word == '雪城': return 'syracuse'
-        
+
         translator = Translator(from_lang='zh', to_lang='en')
         res = translator.translate(word).lower().rstrip(' city')
         return res
@@ -52,7 +52,7 @@ async def weather(session: CommandSession):
         # openweathermap needs an English city name
         city = util.translate2Eng(city) if isChinese else city
         weatherReport = await openweathermap_weather(city)
-    
+
     #log.logger.debug(city)
     await session.send(weatherReport)
     log.logger.debug(f'weather called: {weatherReport[:20]}...')
