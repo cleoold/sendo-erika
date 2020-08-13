@@ -5,6 +5,7 @@ from nonebot import CommandSession as _CommandSession
 from nonebot import log as _log
 from nonebot import on_command as _on_command
 from nonebot.command import CommandHandler_T
+from nonebot.permission import GROUP_MEMBER, SUPERUSER
 
 from .typing import Awaitable, Callable, Generator, Iterable
 
@@ -25,7 +26,7 @@ def force_private(f: Callable[..., Awaitable]) -> Callable[..., Awaitable]:
     return wrapped
 
 
-def global_cooldown(cooldown: int):
+def global_cooldown(cooldown: int) -> Callable[[Callable[..., Awaitable]], Callable[..., Awaitable]]:
     '''limit the rate of a command globally
     '''
     def deco(f: Callable[..., Awaitable]) -> Callable[..., Awaitable]:
@@ -69,16 +70,16 @@ def _names_after_do2(names: Iterable[str]) -> Generator[str, None, None]:
         yield f'跟我{each}'
 
 # decorators
-def on_grp_command_ask(*names: Iterable[str]) -> CommandHandler_T:
+def on_grp_command_ask(*names: str) -> Callable[[CommandHandler_T], CommandHandler_T]:
     '''default to group chat and superusers.
     automatically generates question marks after command names as aliases
     '''
     namesNew = _names_after_q(names)
     return _on_command(next(namesNew),
                        aliases=(name for name in namesNew),
-                       permission=0xF100) # # SUPERUSER | GROUP_MEMBER
+                       permission=SUPERUSER | GROUP_MEMBER)
 
-def on_grp_command_do(*names: Iterable[str]) -> CommandHandler_T:
+def on_grp_command_do(*names: str) -> Callable[[CommandHandler_T], CommandHandler_T]:
     '''default to group chat and superusers.
     automatically generates some pre/suffixes as aliases
     '''
@@ -87,13 +88,13 @@ def on_grp_command_do(*names: Iterable[str]) -> CommandHandler_T:
     namesNew = _names_after_q(namesNew)
     return _on_command(next(namesNew),
                        aliases=(name for name in namesNew),
-                       permission=0xF100)
+                       permission=SUPERUSER | GROUP_MEMBER)
 
-def on_grp_command(*names: Iterable[str]) -> CommandHandler_T:
+def on_grp_command(*names: str) -> Callable[[CommandHandler_T], CommandHandler_T]:
     '''default to group chat and superusers.
     '''
     namesNew = iter(names)
     return _on_command(next(namesNew),
                        aliases=(name for name in namesNew),
-                       permission=0xF100)
+                       permission=SUPERUSER | GROUP_MEMBER)
 ##############################################################################

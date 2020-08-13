@@ -70,7 +70,7 @@ def process_result(payload: Union[dict, None]) -> str:
     res: str = ''
     try:
         for k in ('stdout', 'stderr', 'error'):
-            val: str = payload.get(k)
+            val = payload.get(k)
 
             lines: list = val.splitlines()
             lines, linesRemain = lines[:15], lines[15:]

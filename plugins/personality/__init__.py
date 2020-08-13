@@ -1,5 +1,3 @@
-import random
-
 from nonebot import CommandSession as CmdS
 from nonebot.permission import *
 

@@ -90,7 +90,7 @@ async def _(session: CommandSession):
 
 @on_command('所在的群', permission=SUPERUSER, privileged=True)
 async def groups_in(session: CommandSession):
-    groups: dict = await get_bot().get_group_list()
+    groups = await get_bot().get_group_list()
     res = ''
     for each in groups:
         res += f'{each["group_id"]}: {each["group_name"]}\n'

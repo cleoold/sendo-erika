@@ -28,7 +28,7 @@ class random_ops:
     @staticmethod
     def nl_proc(session: NLPSession) -> Generator[Union[str, None], None, None]:
         argsStripped: str = session.msg_text.strip()
-        words: Generator = posseg.lcut(argsStripped)
+        words = posseg.lcut(argsStripped)
 
         for word in words:
             if word.flag == 'm':
@@ -57,9 +57,9 @@ async def _(session: CommandSession):
 @on_natural_language(keywords={'骰子', '色子'}, permission=SUPERUSER | GROUP_MEMBER)
 async def _(session: NLPSession):
     times = next(random_ops.nl_proc(session))
-    return IntentCommand(64.0, '扔骰子', current_arg=times or None)
+    return IntentCommand(64.0, '扔骰子', current_arg=times or '')
 
 @on_natural_language(keywords={'硬币', '钢镚'}, permission=SUPERUSER | GROUP_MEMBER)
 async def _(session: NLPSession):
     times = next(random_ops.nl_proc(session))
-    return IntentCommand(64.0, '扔硬币', current_arg=times or None)
+    return IntentCommand(64.0, '扔硬币', current_arg=times or '')

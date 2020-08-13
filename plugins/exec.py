@@ -1,6 +1,6 @@
 import asyncio
 import pprint
-from typing import Awaitable, Callable
+from typing import Awaitable
 
 from nonebot import CommandSession, on_command
 from nonebot.message import unescape
@@ -19,14 +19,14 @@ remote [statements]
 @on_command('remote', permission=SUPERUSER)
 @force_private
 async def _(session: CommandSession):
-    code = unescape(session.current_arg)
+    code = unescape(session.current_arg or '')
 
     try:
         localArgs = {}
         exec(code, None, localArgs)
         await session.send(f'Locals:\n{pprint.pformat(localArgs, indent=2)}')
 
-        if isinstance(localArgs.get('run'), Callable):
+        if callable(localArgs.get('run')):
             res = localArgs['run'](session.bot, session.event)
             if isinstance(res, Awaitable):
                 res = await asyncio.wait_for(res, 6)

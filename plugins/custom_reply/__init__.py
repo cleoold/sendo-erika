@@ -46,7 +46,7 @@ def load_data() -> dict:
 REPLIES: dict = load_data()
 
 # acquires global event monitor
-bot: NoneBot = get_bot()
+bot = get_bot()
 
 # auto reply in group chats
 
@@ -54,22 +54,18 @@ def process_var(ctx: Event, myText: str) -> str:
     'process whether the reply keyword contains variables.'
     if not re.search(r'{SENDER_.+]', myText):
         return myText
-    else:
-        # define pointer constants
-        try:
-            SENDER_ID: str = str(ctx['sender']['user_id'])
-            SENDER_NICK: str = ctx['sender']['nickname']
-            SENDER_CARD: str = ctx['sender']['card']
-            SENDER_ROLE: str = ctx['sender']['role']
-            SENDER_TITLE: str = ctx['sender']['title']
-        except Exception:
-            pass
-        # when you chose python, you gave up efficiency...
-        return myText.replace('{SENDER_ID]', SENDER_ID).\
-            replace('{SENDER_NICK]', SENDER_NICK).\
-            replace('{SENDER_CARD]', SENDER_CARD).\
-            replace('{SENDER_ROLE]', SENDER_ROLE).\
-            replace('{SENDER_TITLE]', SENDER_TITLE)
+    # define pointer constants
+    SENDER_ID: str = str(ctx['sender']['user_id'])
+    SENDER_NICK: str = ctx['sender']['nickname']
+    SENDER_CARD: str = ctx['sender']['card']
+    SENDER_ROLE: str = ctx['sender']['role']
+    SENDER_TITLE: str = ctx['sender']['title']
+    # when you chose python, you gave up efficiency...
+    return myText.replace('{SENDER_ID]', SENDER_ID).\
+        replace('{SENDER_NICK]', SENDER_NICK).\
+        replace('{SENDER_CARD]', SENDER_CARD).\
+        replace('{SENDER_ROLE]', SENDER_ROLE).\
+        replace('{SENDER_TITLE]', SENDER_TITLE)
 
 class _Get_Out(Exception):
     pass

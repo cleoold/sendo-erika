@@ -22,7 +22,7 @@ DICE_RESULTS = (
 .::     
 .:::::::
 ''',
-'''
+r'''
  ____  
 |___ \ 
   __) |
@@ -38,7 +38,7 @@ DICE_RESULTS = (
    | |  
    |_|  
 ''',
-'''
+r'''
  _____ 
 | ____|
 | |__  
@@ -108,7 +108,7 @@ def flip_coin_many(times:Any=1) -> str:
         times = int(times)
         if times == 1:
             return flip_coin()
-        
+
         if times > 300000:
             raise TimeoutError
         resList = [0, 0]

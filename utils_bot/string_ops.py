@@ -12,7 +12,7 @@ def my_rjust(s, n, fillchar=' ') -> str:
     return s.rjust(n - (len(s.encode("gbk")) - len(s)), fillchar)
 
 def half_none(s: str) -> str:
-    'half chance returning s, half chance returning nothing'
+    'half chance returning s, half chance returning empty string'
     return s if _random.choice((0,1,)) else ''
 
 
