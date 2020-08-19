@@ -10,6 +10,8 @@ from nonebot import CommandSession, get_bot, log, on_command
 from nonebot.permission import *
 
 from utils_bot.command_ops import force_private
+from utils_bot.typing import Union
+
 
 FAILED_MSG = '查看关键字对：view [群号] [模式]\n'\
             '添加单条消息：add [群号] [模式]\n'\
@@ -75,6 +77,7 @@ async def handle_keyword_reply(ctx: Event):
 
     currentGroupId: int = ctx['group_id']
     textReceived: str = ctx['raw_message']
+    toSend: Union[str, None] = None
 
     # config specific to groups is prioritized
     for groupId in (str(currentGroupId), 'global'):
@@ -82,31 +85,27 @@ async def handle_keyword_reply(ctx: Event):
             # handles full_match
             mayReply = REPLIES[groupId]['full_match'].get(textReceived, None)
             if mayReply is not None:
-                toSend: str = process_var(ctx, random.choice(mayReply))
+                toSend = process_var(ctx, random.choice(mayReply))
                 raise _Get_Out
             # handles inclusive_match
             for keyword, reply in REPLIES[groupId]['inclusive_match'].items():
                 if keyword in textReceived:
-                    toSend: str = process_var(ctx, random.choice(reply))
+                    toSend = process_var(ctx, random.choice(reply))
                     raise _Get_Out
             # handles regex_match
             for keyword, reply in REPLIES[groupId]['regex_match'].items():
                 if re.search(keyword, textReceived):
-                    toSend: str = process_var(ctx, random.choice(reply))
+                    toSend = process_var(ctx, random.choice(reply))
                     raise _Get_Out
         except KeyError:
             # REPLIES[str(groupId)] may not exist, go to global
             pass
         except _Get_Out:
             break
-    try:
-        toSend
+    if toSend is not None:
         # waits few secs before sending message
         await asyncio.sleep(random.randint(1,5))
         await bot.send_group_msg(group_id=currentGroupId, message=toSend)
-    except NameError:
-        pass
-
 
 
 # superuser can modify replies
@@ -225,11 +224,16 @@ async def keyword_mod(session: CommandSession):
     ##################################################################
 
     global REPLIES
-    # get keyword mod object
-    try:
-        keymod = keyword_ops(REPLIES, order, groupId, mode)
-    except Exception as exc:
-        session.finish(str(exc))
+
+    # get keyword mod object, reuse if this command is recalled and continued
+    if not session.state.get('keymod_obj'):
+        try:
+            keymod = keyword_ops(REPLIES, order, groupId, mode)
+            session.state['keymod_obj'] = keymod
+        except Exception as exc:
+            session.finish(str(exc))
+    else:
+        keymod = session.state['keymod_obj']
     # VIEW order
     if order == 'view':
         session.finish(keymod.view_keywords())
