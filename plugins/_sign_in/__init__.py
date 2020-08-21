@@ -27,7 +27,6 @@ async def initialize_db():
     async with SignInSession(SIGN_IN_DB_PATH, 0, 0) as table_init:
         log.logger.info('loading signin db...')
         await table_init.init_table()
-        await table_init.commit()
 
 
 def get_user_and_group_ids(session: CommandSession) -> Tuple[str, str]:
@@ -46,7 +45,6 @@ async def sign_in(session: CommandSession):
             user_id, group_id) as signin_session:
         await signin_session.init_user()
         status, score, added = await signin_session.user_sign_in()
-        await signin_session.commit()
         if status:
             await session.send(
                 f'{get_greeting(score)} 好感度：{format_score(score)} (+{added})', 
