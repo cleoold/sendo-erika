@@ -53,10 +53,11 @@ async def fetch(lang: str, code: str) -> Union[dict, None]:
                     'files': [{
                         'name': (SUPPORTED_LANGS[lang].get('name', 'main') +
                                 f'.{SUPPORTED_LANGS[lang]["ext"]}'),
-                        "content": code
+                        'content': code
                     }],
                     'stdin': '',
-                    'command': ''}) as req:
+                    'command': ''
+            }) as req:
                 payload: dict = await req.json()
                 assert isinstance(payload, dict)
         except Exception:

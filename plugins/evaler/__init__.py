@@ -41,10 +41,10 @@ async def _(session: CommandSession):
             #log.logger.debug(f'lang: {lang}, code:{code}')
             # manual correction
             if lang == 'py': lang = 'python'
-            if lang == 'c++': lang = 'cpp'
-            if lang == 'c#': lang = 'csharp'
-            if lang == 'js': lang = 'javascript'
-            if lang == 'f#': lang = 'fsharp'
+            elif lang == 'c++': lang = 'cpp'
+            elif lang == 'c#': lang = 'csharp'
+            elif lang == 'js': lang = 'javascript'
+            elif lang == 'f#': lang = 'fsharp'
 
             if not lang in SUPPORTED_LANGS.keys():
                 session.finish('当前语言不支持~')
