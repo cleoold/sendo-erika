@@ -28,7 +28,7 @@ class Records(dict):
         'creates tracker for each group at beginning'
         record = self.get(group_id)
         if record is None:
-            record = Record(msg, 1)
+            record = Record(msg, 0) # TODO: better semantics
             self[group_id] = record
         return record
 
