@@ -1,4 +1,5 @@
 import random
+from typing import List
 
 import aiosqlite
 
@@ -73,7 +74,11 @@ class SignInSession(AsyncContextManager):
 
         self.conn = aiosqlite.connect(db_name)
         self.user_id: int = int(user_id)
-        self.identity: str = f'{user_id}_{group_id}'
+        self.group_id = int(group_id)
+
+    @property
+    def identity(self) -> str:
+        return f'{self.user_id}_{self.group_id}'
 
     async def searchall(self) -> list:
         cur = await self.conn.execute('select * from sign')
@@ -128,6 +133,15 @@ class SignInSession(AsyncContextManager):
         async with self.conn.execute('SELECT * FROM sign WHERE identity=?', (self.identity,)) as cur:
             currentEntry = await cur.fetchone()
             return user_score_to_user(currentEntry[2]), currentEntry[4], currentEntry[1]
+
+    async def group_top_five(self) -> List[Tuple[int, float]]:
+        'returns list of users\'s qq followed by score, ordered descending'
+        res = await self.conn.execute_fetchall('''SELECT identity, score FROM sign
+                        WHERE identity LIKE ?
+                        ORDER BY score DESC
+                        LIMIT 5''',
+                        (f'_{self.group_id}',))
+        return [(int(row[0].split('_')[0]), user_score_to_user(row[1])) for row in res]
 
     async def __aenter__(self) -> 'SignInSession':
         await self.conn

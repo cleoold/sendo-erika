@@ -8,6 +8,8 @@ involke in a group chat like this:
 好感度：1.8
 历史签到次数：5
 上次签到：2019.08.27
+> 千堂签到排名
+...
 ```
 
 This plugin overlaps with test_rp plugin. Please remove it to use this.
