@@ -3,6 +3,7 @@ from os import path
 
 from nonebot import CommandSession, get_bot, log, on_command
 from nonebot.permission import *
+from aiocqhttp.exceptions import ActionFailed
 
 from utils_bot.typing import Tuple
 
@@ -81,8 +82,12 @@ async def signin_ranking(session: CommandSession):
 
     async def line(row):
         user_id, score = row
-        name = (await bot.get_group_member_info(group_id=group_id, user_id=user_id))['card'] \
-            or (await bot.get_stranger_info(user_id=user_id))['nickname']
+        try:
+            name = (await bot.get_group_member_info(group_id=group_id, user_id=user_id))['card'] \
+                or (await bot.get_stranger_info(user_id=user_id))['nickname']
+        except ActionFailed:
+            # user left group
+            name = user_id
         return f'{format_score(score).ljust(8)}: {name}'
 
     result = await asyncio.gather(*(line(row) for row in ranking))

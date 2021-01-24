@@ -73,7 +73,7 @@ async def _(ctx: Event):
         sendMsg = records.you_repeat(groupId, msg)
         # delayed
         if sendMsg is not None:
-            asyncio.sleep(random.randint(1, 10))
+            await asyncio.sleep(random.randint(1, 10))
     else:
         sendMsg = records.simple_repeat(groupId, msg, 3)
     if sendMsg is not None:
