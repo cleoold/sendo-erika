@@ -4,7 +4,7 @@ from typing import List
 import aiosqlite
 
 from utils_bot.datetime import TZ, datetime
-from utils_bot.typing import AsyncContextManager, Tuple, Union
+from utils_bot.typing import Tuple, Union
 
 
 def today_to_str() -> str:
@@ -54,9 +54,10 @@ def format_score(s: float) -> str:
         return f'{float(s % 100):.4} {"♥" * int(s // 100)}'
 
 
-class SignInSession(AsyncContextManager):
+class SignInSession:
 
-    '''Table attributes:
+    '''
+    Table attributes:
 
     table name: sign
 
