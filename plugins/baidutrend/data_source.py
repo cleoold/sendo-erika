@@ -2,7 +2,6 @@ import aiohttp
 import bs4  # and lxml
 
 from utils_bot.datetime import TZ, datetime
-from utils_bot.string_ops import my_ljust, my_rjust
 from utils_bot.logging import logger
 
 
@@ -24,20 +23,16 @@ async def get_baidu_trend(opt: str) -> str:
             res.raise_for_status()
             soup = bs4.BeautifulSoup(await res.read(), features='lxml')
 
-        titles = soup.select('.c-table.opr-toplist1-table a')           #|
-        pops = soup.select('.opr-toplist1-right')                       #| place for updates
+        titles = soup.select('a.opr-toplist1-subtitle')           #|
+        #pops = soup.select('.opr-toplist1-right')                #| place for updates
         length = len(titles)
-        if length != len(pops) or length < 5: # one news matches one pop
-            raise Exception('The number of entries don\'t match the number of popularities. Something must go wrong.')
-        
+
         if opt != 'all':
-            titles = titles[:6]
-            pops = pops[:6]
             length = 6
-        
-        res = '     NEWS                  POP\n'
+
+        res = '     NEWS\n'
         for j in range(length):
-            res += my_ljust(titles[j].getText(), 20) + my_rjust(pops[j].getText(), 10) + '\n'
+            res += titles[j].getText().strip() + '\n'
         res += 'fetched %s with love. Source: www.baidu.com' % getTime()
         return res
     except Exception as e:
