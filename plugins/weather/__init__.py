@@ -1,8 +1,10 @@
 from jieba import posseg
-from nonebot import (CommandSession, IntentCommand, NLPSession, log,
+from nonebot import (CommandSession, IntentCommand, NLPSession,
                      on_command, on_natural_language)
 from nonebot.permission import *
 from translate import Translator
+
+from utils_bot.logging import logger
 
 from .china_city_list_source_amap import CHINESE_CITIES
 from .data_source_amap import amap_weather
@@ -53,9 +55,8 @@ async def weather(session: CommandSession):
         city = util.translate2Eng(city) if isChinese else city
         weatherReport = await openweathermap_weather(city)
 
-    #log.logger.debug(city)
     await session.send(weatherReport)
-    log.logger.debug(f'weather called: {weatherReport[:20]}...')
+    logger.info(f'weather called: {weatherReport[:100]}...')
 
 @weather.args_parser
 async def _(session: CommandSession):

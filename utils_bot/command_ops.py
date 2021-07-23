@@ -2,11 +2,11 @@ from functools import wraps as _wraps
 from time import time as _time
 
 from nonebot import CommandSession as _CommandSession
-from nonebot import log as _log
 from nonebot import on_command as _on_command
 from nonebot.command import CommandHandler_T
 from nonebot.permission import GROUP_MEMBER, SUPERUSER
 
+from .logging import logger as _logger
 from .typing import Awaitable, Callable, Generator, Iterable
 
 
@@ -19,7 +19,7 @@ def force_private(f: Callable[..., Awaitable]) -> Callable[..., Awaitable]:
     async def wrapped(*args, **kwargs):
         session: _CommandSession = args[0]
         if session.event.get('group_id') or session.event.get('discuss_id'):
-            _log.logger.debug('forbidden private command terminated.')
+            _logger.info('forbidden private command terminated.')
             session.finish()
         else:
             return await f(*args, **kwargs)

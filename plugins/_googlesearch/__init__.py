@@ -1,7 +1,8 @@
-from nonebot import CommandSession, log, on_command
+from nonebot import CommandSession, on_command
 from nonebot.permission import *
 
 from utils_bot.command_ops import global_cooldown
+from utils_bot.logging import logger
 from utils_bot.typing import depreciated
 
 from .data_source import getGoogling
@@ -23,7 +24,7 @@ async def google(session: CommandSession):
         keyword = session.get('keyword')
         report = await getGoogling(keyword)
         await session.send(report)
-        log.logger.debug(f'google search called: {report[:37]}...')
+        logger.info(f'google search called: {report[:37]}...')
     except ValueError:
         await session.send('error')
 

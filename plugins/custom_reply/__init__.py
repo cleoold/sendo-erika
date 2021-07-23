@@ -6,10 +6,11 @@ from os import path
 import asyncio
 
 from aiocqhttp import Event
-from nonebot import CommandSession, get_bot, log, on_command
+from nonebot import CommandSession, get_bot, on_command
 from nonebot.permission import *
 
 from utils_bot.command_ops import force_private
+from utils_bot.logging import logger
 from utils_bot.typing import Union
 
 
@@ -220,7 +221,7 @@ async def keyword_mod(session: CommandSession):
         mode = iniParam[2]
     except Exception:
         pass
-    log.logger.debug(f'keyword modification called: {order}; {groupId}; {mode}')
+    logger.info(f'keyword modification called: {order}; {groupId}; {mode}')
     ##################################################################
 
     global REPLIES

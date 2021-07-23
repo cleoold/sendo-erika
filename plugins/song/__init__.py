@@ -1,8 +1,9 @@
 from nonebot import (CommandSession, IntentCommand, MessageSegment, NLPSession,
-                     log, on_command, on_natural_language)
+                     on_command, on_natural_language)
 from nonebot.permission import *
 
 from utils_bot.command_ops import global_cooldown
+from utils_bot.logging import logger
 
 from .data_source import get_netease_song_id
 
@@ -21,7 +22,7 @@ async def share_song(session: CommandSession):
     report = MessageSegment.music('163', songid) if songid is not None \
         else '未能找到这首歌曲？~'
     await session.send(report)
-    log.logger.debug(f'share song called: {report}...')
+    logger.info(f'share song called: {report}...')
 
 @share_song.args_parser
 async def _(session: CommandSession):

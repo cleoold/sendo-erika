@@ -3,13 +3,14 @@
 # sample json fetch:
 # http://api.openweathermap.org/data/2.5/forecast?appid=AAAAAAAAAAAAAAA&q=London&units=metric
 
-from utils_bot.datetime import datetime
 import json
 import random
 
 import aiohttp
 from nonebot import get_bot
 
+from utils_bot.datetime import datetime
+from utils_bot.logging import logger
 from utils_bot.typing import Union
 
 #                                                      'weather' for current weather instead
@@ -33,7 +34,8 @@ async def fetch(city: str) -> Union[dict, None]:
                 status = res['cod'].lower()
                 assert status == '200' or status == '404'
                 return res
-        except Exception:
+        except Exception as e:
+            logger.exception(e)
             return None
 
 # yields weather data

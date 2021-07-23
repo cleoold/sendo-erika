@@ -2,10 +2,11 @@ import re
 
 from apscheduler.job import Job
 from nonebot import (CommandSession, IntentCommand, MessageSegment, NLPSession,
-                     get_bot, log, on_command, on_natural_language, scheduler)
+                     get_bot, on_command, on_natural_language, scheduler)
 from nonebot.permission import *
 
 from utils_bot.datetime import TZ, datetime, timedelta
+from utils_bot.logging import logger
 
 __plugin_name__ = '定时提醒 *NL'
 __plugin_usage__ = f'''feature: 在XX小时之后提醒用户
@@ -35,7 +36,7 @@ async def send_notify(user: int, msg: str, group:int=0):
         await bot.send_group_msg(group_id=group, message=sendmsg)
     else:
         await bot.send_private_msg(user_id=user, message=msg)
-    log.logger.info(f'user {user} finished notifyme job in group {group}')
+    logger.info(f'user {user} finished notifyme job in group {group}')
 
 
 @on_command('定时提醒', aliases=('提醒我', '闹钟'), permission=GROUP_MEMBER | SUPERUSER)
@@ -61,7 +62,7 @@ async def notifyme_set(session: CommandSession):
     time = fmt_job_scheduled_time(new_job)
     msg = new_job.args[1]
     await session.send(f'已设定：\n{time} {msg}')
-    log.logger.info(f'user {user} finished notifyme job in group {group}')
+    logger.info(f'user {user} finished notifyme job in group {group}')
 
 @notifyme_set.args_parser
 async def _(session: CommandSession):

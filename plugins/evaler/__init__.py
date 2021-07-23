@@ -1,7 +1,8 @@
-from nonebot import CommandSession, log, on_command
+from nonebot import CommandSession, on_command
 from nonebot.permission import *
 
 from utils_bot.command_ops import global_cooldown
+from utils_bot.logging import logger
 
 from .data_source_glot_run import SUPPORTED_LANGS, code_run_glot
 
@@ -25,7 +26,7 @@ async def coderunner(session: CommandSession):
     argsList: tuple = session.get('args')
     res = await code_run_glot(argsList[0], argsList[1])
     await session.send(res)
-    log.logger.debug(f'coderunner called: {res[:20]}...')
+    logger.info(f'coderunner called: {res[:20]}...')
 
 @coderunner.args_parser
 async def _(session: CommandSession):
@@ -38,7 +39,6 @@ async def _(session: CommandSession):
                 session.finish(__plugin_usage__)
 
             lang, code = argsList[0].strip().lower(), argsList[1]
-            #log.logger.debug(f'lang: {lang}, code:{code}')
             # manual correction
             if lang == 'py': lang = 'python'
             elif lang == 'c++': lang = 'cpp'

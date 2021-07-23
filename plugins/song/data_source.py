@@ -1,5 +1,6 @@
 import aiohttp
 
+from utils_bot.logging import logger
 from utils_bot.typing import Union
 
 # source: https://github.com/a632079/teng-koa
@@ -13,9 +14,9 @@ async def get_netease_song_id(name: str) -> Union[int, None]:
     try:
         async with aiohttp.ClientSession() as session:
             res = await session.get(f'{URL_BASE}{name}{URL_PARAM}', headers=headers, timeout=10)
-            if res.status != 200:
-                return None
+            res.raise_for_status()
             jsn = await res.json()
             return jsn['result']['songs'][0]['id']
-    except Exception:
+    except Exception as e:
+        logger.exception(e)
         return None

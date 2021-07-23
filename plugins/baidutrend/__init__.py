@@ -1,7 +1,8 @@
-from nonebot import CommandSession, log, on_command
+from nonebot import CommandSession, on_command
 from nonebot.permission import *
 
 from utils_bot.command_ops import global_cooldown
+from utils_bot.logging import logger
 
 from .data_source import get_baidu_trend
 
@@ -20,7 +21,7 @@ async def trend(session: CommandSession):
     arg = session.get('arg')
     trendReport = await get_baidu_trend(arg) # arg passed to function get_baidu_trend
     await session.send(trendReport)
-    log.logger.debug(f'Baidu trend called: {trendReport[32:37]}...')
+    logger.info(f'Baidu trend called: {trendReport[32:37]}...')
 
 @trend.args_parser
 async def _(session: CommandSession):

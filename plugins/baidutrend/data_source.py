@@ -3,6 +3,7 @@ import bs4  # and lxml
 
 from utils_bot.datetime import TZ, datetime
 from utils_bot.string_ops import my_ljust, my_rjust
+from utils_bot.logging import logger
 
 
 # gets current time
@@ -20,6 +21,7 @@ async def get_baidu_trend(opt: str) -> str:
     try:
         async with aiohttp.ClientSession() as session:
             res = await session.get(url, headers=headers, timeout=3)
+            res.raise_for_status()
             soup = bs4.BeautifulSoup(await res.read(), features='lxml')
 
         titles = soup.select('.c-table.opr-toplist1-table a')           #|
@@ -38,5 +40,6 @@ async def get_baidu_trend(opt: str) -> str:
             res += my_ljust(titles[j].getText(), 20) + my_rjust(pops[j].getText(), 10) + '\n'
         res += 'fetched %s with love. Source: www.baidu.com' % getTime()
         return res
-    except Exception:
+    except Exception as e:
+        logger.exception(e)
         return 'an error occurred'

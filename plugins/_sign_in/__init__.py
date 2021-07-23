@@ -1,10 +1,11 @@
 import asyncio
 from os import path
 
-from nonebot import CommandSession, get_bot, log, on_command
+from nonebot import CommandSession, get_bot, on_command
 from nonebot.permission import *
 from aiocqhttp.exceptions import ActionFailed
 
+from utils_bot.logging import logger
 from utils_bot.typing import Tuple
 
 from .execute import SignInSession, format_score, generate_luck_result
@@ -27,7 +28,7 @@ SIGN_IN_DB_PATH = path.join(path.dirname(__file__), 'signin.db')
 @bot.server_app.before_serving
 async def initialize_db():
     async with SignInSession(SIGN_IN_DB_PATH, 0, 0) as table_init:
-        log.logger.info('loading signin db...')
+        logger.info('loading signin db...')
         await table_init.init_table()
 
 
@@ -53,7 +54,7 @@ async def sign_in(session: CommandSession):
             f'今日签到过啦~ 好感度：{format_score(score)}', 
             at_sender=True)
 
-    log.logger.debug(f'{user_id} trying to sign in in group {group_id} success: {status}')
+    logger.info(f'{user_id} trying to sign in in group {group_id} success: {status}')
 
 
 @on_command('签到信息', aliases=('信息', 'signinfo', '好感度'), permission=GROUP_MEMBER)

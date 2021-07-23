@@ -9,6 +9,7 @@ import re
 import aiohttp
 from nonebot import get_bot
 
+from utils_bot.logging import logger
 from utils_bot.typing import Union
 
 URL_BASE: str = 'http://restapi.amap.com/v3/weather/weatherInfo?key='
@@ -30,7 +31,8 @@ async def fetch(city: str) -> Union[dict, None]:
                 res = json.loads(await r.text(), encoding='utf-8')
                 assert res['info'].lower() == 'ok'
                 return res
-        except Exception:
+        except Exception as e:
+            logger.exception(e)
             return None
 
 # yields weather data

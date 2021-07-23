@@ -2,6 +2,7 @@
 import aiohttp
 from nonebot import get_bot
 
+from utils_bot.logging import logger
 from utils_bot.typing import Union
 
 # code running api source: https://github.com/prasmussen/glot-run/
@@ -58,9 +59,10 @@ async def fetch(lang: str, code: str) -> Union[dict, None]:
                     'stdin': '',
                     'command': ''
             }) as req:
+                req.raise_for_status()
                 payload: dict = await req.json()
-                assert isinstance(payload, dict)
-        except Exception:
+        except Exception as e:
+            logger.exception(e)
             return None
 
     return payload
