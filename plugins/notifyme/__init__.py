@@ -39,7 +39,7 @@ async def send_notify(user: int, msg: str, group:int=0):
     logger.info(f'user {user} finished notifyme job in group {group}')
 
 
-@on_command('定时提醒', aliases=('提醒我', '闹钟'), permission=GROUP_MEMBER | SUPERUSER)
+@on_command('定时提醒', aliases=('闹钟'), permission=GROUP_MEMBER | SUPERUSER)
 async def notifyme_set(session: CommandSession):
     job_id = get_job_id(session)
     existing_job = scheduler.get_job(job_id)
@@ -83,7 +83,7 @@ async def _(session: CommandSession):
 
 @on_natural_language(keywords={'提醒我'}, permission=SUPERUSER | GROUP_MEMBER)
 async def _(session: NLPSession):
-    sentence = session.msg_text.strip().replace('提醒我', '', 1)
+    sentence = session.msg_text.replace('提醒我', '', 1).strip()
 
     def r(regex):
         search = re.findall(regex, sentence)
