@@ -29,7 +29,7 @@ class util:
 
     @staticmethod
     def isAmapSupported(word: str) -> bool:
-        return word[:2] in CHINESE_CITIES
+        return word.rstrip('市') in CHINESE_CITIES
 
     @staticmethod
     def translate2Eng(word: str) -> str:

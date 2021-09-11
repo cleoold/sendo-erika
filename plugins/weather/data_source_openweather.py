@@ -9,7 +9,7 @@ import random
 import aiohttp
 from nonebot import get_bot
 
-from utils_bot.datetime import datetime
+from utils_bot.datetime import datetime, timedelta
 from utils_bot.logging import logger
 from utils_bot.typing import Union
 
@@ -51,12 +51,11 @@ def process_weatherdata(resJson: Union[dict, None]) -> str:
     nation = cityChart['country']
     city = cityChart['name'].upper()
     timezone = cityChart['timezone']
-    reportTime = datetime.utcfromtimestamp(
-        resJson['list'][0]['dt']).strftime('%Y-%m-%d %H:%M:%S')
+    timediff = timedelta(seconds=timezone)
 
-    heading = f'''[below times are UTC]
-region: {city}, {nation}, time diff from UTC: {timezone/60/60}h
-  report time: {reportTime}\n'''
+    heading = f'''[ALL TIMES LOCAL]
+region: {city}, {nation}
+'''
 
     def resGen():
         try:
@@ -70,8 +69,10 @@ region: {city}, {nation}, time diff from UTC: {timezone/60/60}h
                 tempMax = mainChart['temp_max']
                 temp =  f'{tempMin}°C' if tempMin == tempMax \
                     else f'{tempMin}-{tempMax}°C'
+                time = (datetime.utcfromtimestamp(directChart['dt']) + timediff) \
+                    .strftime('%Y-%m-%d %H:%M:%S')
                 yield \
-f'''{directChart['dt_txt'][:16]}: {weatherChart['main']} ({weatherChart['description']}), {temp}
+f'''{time}: {weatherChart['main']} ({weatherChart['description']}), {temp}
     wind: {windChart['speed']}m/s ({windChart['deg']}°), humidity: {mainChart['humidity']}, pressure: {mainChart['pressure']}hPa'''
         except (IndexError, KeyError):
             pass
